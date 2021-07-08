@@ -1,3 +1,4 @@
+import 'package:boleto_organizer/app/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +21,7 @@ class AppWidget extends StatelessWidget {
           Provider<AppFlavor>.value(value: flavor),
         ],
       ),
+      initialRoute: LOGIN_ROUTE,
       routes: routes,
     );
   }
