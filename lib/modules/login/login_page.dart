@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../app/routes/routes_names.dart';
 import '../../app/theme/colors.dart';
 import '../../app/theme/images.dart';
-import 'controller/login_controller.dart';
+import '../../shared/auth/controller/auth_controller.dart';
 import 'widgets/login_button.dart';
 import 'widgets/person_image.dart';
 import 'widgets/title.dart';
@@ -13,7 +15,16 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _controller = LoginController();
+  @override
+  void initState() {
+    super.initState();
+    context.read<AuthController>().addListener(() {
+      if (context.read<AuthController>().user != null) {
+        Navigator.pushReplacementNamed(context, HOME_ROUTE);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -47,9 +58,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Image.asset(AppImages.logomini),
                   LoginTitle(),
-                  LoginButton(
-                    onTap: () async => _controller.googleSignIn(context),
-                  ),
+                  LoginButton(),
                 ],
               ),
             )

@@ -1,9 +1,12 @@
-import 'package:boleto_organizer/app/routes/routes_names.dart';
-import 'package:boleto_organizer/modules/home/home_page.dart';
-import 'package:boleto_organizer/modules/login/login_page.dart';
 import 'package:flutter/material.dart';
 
+import '../../modules/home/home_page.dart';
+import '../../modules/login/login_page.dart';
+import '../../modules/splash/splash_page.dart';
+import 'routes_names.dart';
+
 final Map<String, Widget Function(BuildContext)> routes = {
-  HOME_ROUTE: (_) => HomePage(),
+  SPLASH_ROUTE: (_) => SplashPage(),
   LOGIN_ROUTE: (_) => LoginPage(),
+  HOME_ROUTE: (_) => HomePage(),
 };
