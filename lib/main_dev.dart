@@ -4,5 +4,5 @@ import 'app/app_widget.dart';
 import 'flavor.dart';
 
 void main() {
-  runApp(AppWidget(AppFlavor.DEV));
+  runApp(const AppWidget(AppFlavor.DEV));
 }
