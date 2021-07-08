@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'app/app_widget.dart';
+import 'app/firebase_app.dart';
 import 'flavor.dart';
 
 void main() {
-  runApp(const AppWidget(AppFlavor.PROD));
+  runApp(const AppFirebase(AppFlavor.PROD));
 }
