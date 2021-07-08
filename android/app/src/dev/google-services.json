@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "18042417019",
+    "project_id": "boleto-organizer-dev-fb002",
+    "storage_bucket": "boleto-organizer-dev-fb002.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:18042417019:android:4266ab6f091f5e05af57de",
+        "android_client_info": {
+          "package_name": "com.brennerferreira.boleto_organizer.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "18042417019-rc4j26tdb7gn5rrvqlnko35hatc992bg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.brennerferreira.boleto_organizer.dev",
+            "certificate_hash": "ee11b884aed97c600bfefe6765fb2beba85a0d33"
+          }
+        },
+        {
+          "client_id": "18042417019-dh7s1ljcihdd1ph4bbfecbnnal1jbm9o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGrzizAwdvcbKRdKHfbhCOnajK3csK0J0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "18042417019-dh7s1ljcihdd1ph4bbfecbnnal1jbm9o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
