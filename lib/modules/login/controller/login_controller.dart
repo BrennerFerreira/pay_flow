@@ -1,29 +1,22 @@
-import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:injectable/injectable.dart';
 
-import '../../../shared/auth/auth_controller.dart';
+import '../../../injectable.dart';
+import '../../../shared/auth/controller/auth_controller.dart';
 import '../../../shared/user/models/user.dart';
+import '../services/i_login_services.dart';
 
+@Injectable()
 class LoginController {
-  Future<void> googleSignIn(BuildContext context) async {
-    final GoogleSignIn _signIn = GoogleSignIn(scopes: ['email']);
-    final AuthController _authController = AuthController();
-    try {
-      final response = await _signIn.signIn();
-      User? user;
+  final ILoginServices _services;
 
-      if (response != null) {
-        user = User(
-          displayName: response.displayName ?? "Usuário",
-          email: response.email,
-          id: response.id,
-          photoUrl: response.photoUrl,
-        );
-      }
+  LoginController(this._services);
 
-      _authController.setUser(context, user);
-    } catch (error) {
-      print(error);
+  Future<void> googleSignIn() async {
+    final AuthController _authController = getIt<AuthController>();
+    final User? user = await _services.googleSignIn();
+
+    if (user != null) {
+      await _authController.saveUser(user);
     }
   }
 }
