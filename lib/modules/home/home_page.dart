@@ -29,8 +29,6 @@ class _HomePageState extends State<HomePage> {
 
   final User user = getIt<AuthController>().user!;
 
-  final _controller = HomePageController();
-
   final pages = [
     HomeBody(),
     DescriptionBody(),
@@ -46,9 +44,9 @@ class _HomePageState extends State<HomePage> {
             appBar: HomeAppBar.appBar(
                 user: user,
                 onLogOut: () {
-                  _controller.logOut(context);
+                  context.read<HomePageController>().logOut(context);
                 }),
-            body: pages[_controller.currentPage],
+            body: pages[context.watch<HomePageController>().currentPage],
             bottomNavigationBar: HomeBottomNavBar(
               onScannerPressed: () async {
                 await Navigator.pushNamed(

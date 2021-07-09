@@ -131,7 +131,7 @@ class BarCodeScannerController {
     }
   }
 
-  void scanGalleryImage() async {
+  Future<void> scanGalleryImage() async {
     final response = await ImagePicker().getImage(source: ImageSource.gallery);
 
     if (response != null) {
