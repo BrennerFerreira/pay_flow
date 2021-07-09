@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
               decoration: const BoxDecoration(
                 gradient: RadialGradient(
                   colors: [
-                    AppColors.background,
+                    AppColors.white,
                     AppColors.primary,
                   ],
                   center: Alignment(0, 2),

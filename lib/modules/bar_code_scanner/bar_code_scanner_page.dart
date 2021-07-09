@@ -69,7 +69,7 @@ class _BarCodeScannerPageState extends State<BarCodeScannerPage> {
                   "Escaneie o código de barras do boleto",
                   style: AppTextStyles.buttonOnPrimary,
                 ),
-                leading: const BackButton(
+                leading: BackButton(
                   color: AppColors.background,
                 ),
               ),
