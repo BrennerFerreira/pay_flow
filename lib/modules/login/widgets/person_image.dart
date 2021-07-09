@@ -22,7 +22,7 @@ class PersonImage extends StatelessWidget {
               return const LinearGradient(
                 begin: Alignment(0, 0.5),
                 end: Alignment.bottomCenter,
-                colors: [AppColors.background, Colors.transparent],
+                colors: [AppColors.white, Colors.transparent],
               ).createShader(
                 Rect.fromLTRB(0, 0, rect.width, rect.height),
               );

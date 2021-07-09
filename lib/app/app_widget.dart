@@ -22,7 +22,8 @@ class AppWidget extends StatelessWidget {
       ],
       builder: (_, __) => MaterialApp(
         title: 'Organizador de Boletos',
-        theme: AppTheme.appTheme,
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
         debugShowCheckedModeBanner: false,
         routes: routes,
       ),
