@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:boleto_organizer/shared/boleto/helpers/convert_bar_code_string.dart';
+
 class Boleto {
   final String name;
   final DateTime dueDate;
@@ -31,6 +33,10 @@ class Boleto {
     final String stringDay = day < 10 ? "0$day" : day.toString();
     final String stringMonth = month < 10 ? "0$month" : day.toString();
     return "$stringDay/$stringMonth/$year";
+  }
+
+  String? convertBarCode(String barCode) {
+    return ConvertBarCodeString.calculateRow(barCode);
   }
 
   Boleto copyWith({

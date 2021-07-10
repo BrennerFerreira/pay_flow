@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 
+import '../../../shared/boleto/helpers/convert_bar_code_string.dart';
 import 'status/bar_code_scanner_status.dart';
 
 class BarCodeScannerController with ChangeNotifier {
@@ -12,6 +14,8 @@ class BarCodeScannerController with ChangeNotifier {
   BarCodeScannerStatus _status = BarCodeScannerStatus();
   CameraController? _cameraController;
   bool _isLoading = true;
+
+  late Timer _timer;
 
   bool get isLoading => _isLoading;
 
@@ -40,10 +44,16 @@ class BarCodeScannerController with ChangeNotifier {
 
   void _stopImageStream() {
     _setStatus(shouldStopScanner: true);
+
     if (_cameraController != null &&
         _cameraController!.value.isStreamingImages) {
       _cameraController!.stopImageStream();
     }
+
+    if (_timer.isActive) {
+      _timer.cancel();
+    }
+
     notifyListeners();
   }
 
@@ -82,14 +92,12 @@ class BarCodeScannerController with ChangeNotifier {
   }
 
   void _scanWithCamera() {
-    Future.delayed(const Duration(seconds: 20)).then(
-      (value) {
-        if (!status.hasBarCode) {
-          _setStatus(error: "Timeout de leitura do boleto");
-          _stopImageStream();
-        }
-      },
-    );
+    _timer = Timer(const Duration(seconds: 20), () {
+      if (!status.hasBarCode) {
+        _setStatus(error: "Timeout de leitura do boleto");
+        _stopImageStream();
+      }
+    });
   }
 
   void _listenCamera() {
@@ -162,7 +170,7 @@ class BarCodeScannerController with ChangeNotifier {
 
       if (barCode != null && _status.barCode.isEmpty) {
         _setIsLoading(newState: true);
-        _setStatus(barCode: barCode);
+        _setStatus(barCode: ConvertBarCodeString.calculateRow(barCode));
         _stopImageStream();
         _barCodeScanner.close();
         _cameraController?.dispose();

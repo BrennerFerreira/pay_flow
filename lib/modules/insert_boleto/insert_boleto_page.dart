@@ -29,7 +29,9 @@ class _InsertBoletoPageState extends State<InsertBoletoPage> {
   final _moneyInputTextController =
       MoneyMaskedTextController(leftSymbol: "R\$");
 
-  final _barCodeInputTextController = TextEditingController();
+  final _barCodeInputTextController = MaskedTextController(
+    mask: "00000.00000 00000.000000 00000.000000 0 00000000000000",
+  );
 
   @override
   void initState() {
