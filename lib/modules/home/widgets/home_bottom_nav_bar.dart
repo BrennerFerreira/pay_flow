@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 
 import '../../../app/routes/routes_names.dart';
 import '../../../app/theme/colors.dart';
-import '../controllers/boleto_list_controller.dart';
 import '../controllers/home_controller.dart';
 
 class HomeBottomNavBar extends StatelessWidget {
