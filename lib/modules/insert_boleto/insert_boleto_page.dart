@@ -1,11 +1,16 @@
+import 'package:boleto_organizer/app/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 import '../../app/theme/colors.dart';
 import '../../app/theme/text_styles.dart';
 import '../../shared/widgets/label_buttons_set/label_buttons_set.dart';
 import 'controller/insert_boleto_controller.dart';
+import 'widgets/boleto_date_picker_field/boleto_date_picker_field.dart';
+import 'widgets/error_toast/error_toast.dart';
 import 'widgets/input_text/input_text_widget.dart';
 
 class InsertBoletoPage extends StatefulWidget {
@@ -18,21 +23,23 @@ class InsertBoletoPage extends StatefulWidget {
 }
 
 class _InsertBoletoPageState extends State<InsertBoletoPage> {
-  final _pageController = InsertBoletoController();
+  late InsertBoletoController _pageController;
+  late FToast fToast;
 
   final _moneyInputTextController =
       MoneyMaskedTextController(leftSymbol: "R\$");
-
-  final _dateInputTextController = MaskedTextController(mask: "00/00/0000");
 
   final _barCodeInputTextController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    _pageController = context.read<InsertBoletoController>();
     if (widget.barCode != null) {
       _barCodeInputTextController.text = widget.barCode!;
     }
+    fToast = FToast();
+    fToast.init(context);
   }
 
   @override
@@ -69,20 +76,13 @@ class _InsertBoletoPageState extends State<InsertBoletoPage> {
                     InputTextWidget(
                       label: "Nome do boleto",
                       icon: Icons.description_outlined,
+                      textInputType: TextInputType.name,
                       onChanged: (value) {
                         _pageController.onChange(name: value);
                       },
                       validator: _pageController.validateName,
                     ),
-                    InputTextWidget(
-                      controller: _dateInputTextController,
-                      label: "Vencimento (dd/mm/aaaa)",
-                      icon: FontAwesomeIcons.timesCircle,
-                      onChanged: (value) {
-                        _pageController.onChange(dueDate: value);
-                      },
-                      validator: _pageController.validateDueDate,
-                    ),
+                    BoletoDatePickerField(),
                     InputTextWidget(
                       controller: _moneyInputTextController,
                       label: "Valor",
@@ -119,8 +119,20 @@ class _InsertBoletoPageState extends State<InsertBoletoPage> {
         },
         secondaryLabel: "Cadastrar",
         secondaryOnPressed: () async {
-          await _pageController.submitBoleto();
-          Navigator.pop(context);
+          final newBoleto = await _pageController.submitBoleto();
+
+          if (newBoleto == null) {
+            fToast.showToast(
+              child: ErrorToast(),
+              gravity: ToastGravity.BOTTOM,
+              toastDuration: const Duration(seconds: 2),
+            );
+          } else {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              HOME_ROUTE,
+              (route) => false,
+            );
+          }
         },
         enableSecondaryColor: true,
       ),

@@ -9,45 +9,17 @@ import 'i_boleto_list_services.dart';
 class BoletoListServices implements IBoletoListServices {
   @override
   Future<List<Boleto>> getBoletos() async {
-    // try {
-    //   final instance = getIt<SharedPreferences>();
+    try {
+      final instance = getIt<SharedPreferences>();
 
-    //   final response = instance.getStringList("boletos") ?? <String>[];
+      final response = instance.getStringList("boletos") ?? <String>[];
 
-    //   final boletos =
-    //       response.map((boletoJson) => Boleto.fromJson(boletoJson)).toList();
+      final boletos =
+          response.map((boletoJson) => Boleto.fromJson(boletoJson)).toList();
 
-    //   return boletos;
-    // } catch (error) {
-    //   return [];
-    // }
-    final List<Boleto> boletos = [
-      Boleto(
-        barCode: "1234567895132165",
-        dueDate: "12/12/1245",
-        name: "Teste",
-        price: 123.65,
-      ),
-      Boleto(
-        barCode: "1234567895132165",
-        dueDate: "12/12/1245",
-        name: "Teste",
-        price: 123.65,
-      ),
-      Boleto(
-        barCode: "1234567895132165",
-        dueDate: "12/12/1245",
-        name: "Teste",
-        price: 123.65,
-      ),
-      Boleto(
-        barCode: "1234567895132165",
-        dueDate: "12/12/1245",
-        name: "Teste",
-        price: 123.65,
-      ),
-    ];
-
-    return Future.value(boletos);
+      return boletos;
+    } catch (error) {
+      return [];
+    }
   }
 }

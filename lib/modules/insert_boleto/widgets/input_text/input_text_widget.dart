@@ -13,6 +13,8 @@ class InputTextWidget extends StatelessWidget {
   final String? Function(String?)? validator;
   final TextEditingController? controller;
   final void Function(String value) onChanged;
+  final TextCapitalization textCapitalization;
+  final TextInputType textInputType;
 
   const InputTextWidget({
     Key? key,
@@ -22,6 +24,8 @@ class InputTextWidget extends StatelessWidget {
     this.initialValue,
     this.validator,
     this.controller,
+    this.textCapitalization = TextCapitalization.sentences,
+    this.textInputType = TextInputType.number,
   }) : super(key: key);
 
   @override
@@ -59,6 +63,8 @@ class InputTextWidget extends StatelessWidget {
               ),
               style: AppTextStyles.input,
               initialValue: initialValue,
+              textCapitalization: textCapitalization,
+              keyboardType: textInputType,
               validator: validator,
               onChanged: onChanged,
             ),

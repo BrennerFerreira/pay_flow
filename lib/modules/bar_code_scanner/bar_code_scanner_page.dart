@@ -71,7 +71,7 @@ class _BarCodeScannerPageState extends State<BarCodeScannerPage> {
                 backgroundColor: AppColors.black,
                 title: Text(
                   "Escaneie o código de barras do boleto",
-                  style: AppTextStyles.buttonOnPrimary,
+                  style: AppTextStyles.titleOnPrimary,
                 ),
                 leading: BackButton(
                   color: AppColors.background,
@@ -130,17 +130,14 @@ class _BarCodeScannerPageState extends State<BarCodeScannerPage> {
                   title: "Não foi possível identificar um código de barras",
                   subtitle: "Tente novamente ou digite o código do seu boleto",
                   primaryLabel: "Escanear novamente",
-                  primaryOnPressed:
-                      controller.isLoading ? null : controller.startScan,
+                  primaryOnPressed: controller.startScan,
                   secondaryLabel: "Digitar código",
-                  secondaryOnPressed: controller.isLoading
-                      ? null
-                      : () {
-                          Navigator.pushReplacementNamed(
-                            context,
-                            INSERT_BOLETO_ROUTE,
-                          );
-                        },
+                  secondaryOnPressed: () {
+                    Navigator.pushReplacementNamed(
+                      context,
+                      INSERT_BOLETO_ROUTE,
+                    );
+                  },
                 );
               } else {
                 return Container();

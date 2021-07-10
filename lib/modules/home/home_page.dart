@@ -18,14 +18,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  void returnToLoginIfNoUser() {
+    if (context.read<AuthController>().user == null) {
+      Navigator.pushReplacementNamed(context, LOGIN_ROUTE);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    context.read<AuthController>().addListener(() {
-      if (context.read<AuthController>().user == null) {
-        Navigator.pushReplacementNamed(context, LOGIN_ROUTE);
-      }
-    });
+    context.read<AuthController>().addListener(returnToLoginIfNoUser);
   }
 
   final User user = getIt<AuthController>().user!;
@@ -46,18 +48,32 @@ class _HomePageState extends State<HomePage> {
           create: (_) => getIt<BoletoListController>(),
         )
       ],
-      builder: (context, _) {
-        return Scaffold(
-          appBar: HomeAppBar.appBar(
-            user: user,
-            onLogOut: () {
-              context.read<HomePageController>().logOut(context);
-            },
-          ),
-          body: pages[Provider.of<HomePageController>(context).currentPage],
-          bottomNavigationBar: HomeBottomNavBar(),
+      builder: (_, __) {
+        return Consumer<BoletoListController>(
+          builder: (context, boletoList, __) {
+            return Scaffold(
+              appBar: HomeAppBar.appBar(
+                user: user,
+                onLogOut: () {
+                  context.read<HomePageController>().logOut();
+                },
+              ),
+              body: boletoList.isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator.adaptive(),
+                    )
+                  : pages[Provider.of<HomePageController>(context).currentPage],
+              bottomNavigationBar: HomeBottomNavBar(),
+            );
+          },
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    context.read<AuthController>().removeListener(returnToLoginIfNoUser);
+    super.dispose();
   }
 }
