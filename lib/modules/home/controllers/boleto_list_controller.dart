@@ -1,30 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../shared/boleto/models/boleto.dart';
+import '../services/i_boleto_list_services.dart';
 
-class BoletoListController {
-  final boletosNotifier = ValueNotifier<List<Boleto>>([]);
-  List<Boleto> get boletos => boletosNotifier.value;
-  set boletos(List<Boleto> value) => boletosNotifier.value = value;
+@injectable
+class BoletoListController with ChangeNotifier {
+  final IBoletoListServices _services;
 
-  BoletoListController() {
+  BoletoListController(this._services) {
     getBoletos();
   }
 
+  List<Boleto> _boletos = [];
+
+  List<Boleto> get boletos => _boletos;
+
   Future<void> getBoletos() async {
-    try {
-      final instance = await SharedPreferences.getInstance();
-
-      final response = instance.getStringList("boletos") ?? <String>[];
-
-      boletos = response
-          .map(
-            (boletoJson) => Boleto.fromJson(boletoJson),
-          )
-          .toList();
-    } catch (error) {
-      print(error);
-    }
+    _boletos = await _services.getBoletos();
+    notifyListeners();
   }
 }

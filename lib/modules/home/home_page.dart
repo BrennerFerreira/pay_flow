@@ -5,6 +5,7 @@ import '../../app/routes/routes_names.dart';
 import '../../injectable.dart';
 import '../../shared/auth/controller/auth_controller.dart';
 import '../../shared/user/models/user.dart';
+import 'controllers/boleto_list_controller.dart';
 import 'controllers/home_controller.dart';
 import 'widgets/body/description_body/description_body.dart';
 import 'widgets/body/home_body/home_body.dart';
@@ -36,28 +37,34 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => HomePageController(),
-      child: Builder(
-        builder: (context) {
-          return Scaffold(
-            appBar: HomeAppBar.appBar(
-                user: user,
-                onLogOut: () {
-                  context.read<HomePageController>().logOut(context);
-                }),
-            body: pages[context.watch<HomePageController>().currentPage],
-            bottomNavigationBar: HomeBottomNavBar(
-              onScannerPressed: () async {
-                await Navigator.pushNamed(
-                  context,
-                  BAR_CODE_SCANNER_ROUTE,
-                );
-              },
-            ),
-          );
-        },
-      ),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => getIt<HomePageController>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => getIt<BoletoListController>(),
+        )
+      ],
+      builder: (context, _) {
+        return Scaffold(
+          appBar: HomeAppBar.appBar(
+            user: user,
+            onLogOut: () {
+              context.read<HomePageController>().logOut(context);
+            },
+          ),
+          body: pages[Provider.of<HomePageController>(context).currentPage],
+          bottomNavigationBar: HomeBottomNavBar(
+            onScannerPressed: () async {
+              await Navigator.pushNamed(
+                context,
+                BAR_CODE_SCANNER_ROUTE,
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }
