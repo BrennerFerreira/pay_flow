@@ -7,14 +7,18 @@ import '../services/validate_services.dart';
 
 @injectable
 class InsertBoletoController with ChangeNotifier {
-  final ISaveBoletoServices _services;
-
   InsertBoletoController(this._services);
 
-  bool _isLoading = false;
+  final formKey = GlobalKey<FormState>();
+
+  Boleto _boleto = Boleto.empty();
   bool _error = false;
+  bool _isLoading = false;
+  final ISaveBoletoServices _services;
+  final _validateServices = ValidateServices();
 
   bool get isLoading => _isLoading;
+
   bool get error => _error;
 
   void _setIsLoading({required bool newState}) {
@@ -27,22 +31,19 @@ class InsertBoletoController with ChangeNotifier {
     notifyListeners();
   }
 
-  final _validateServices = ValidateServices();
-  Boleto _boleto = Boleto.empty();
-
   Boleto get boleto => _boleto;
-  final formKey = GlobalKey<FormState>();
 
-  String? validateName(String? value) => _validateServices.validateName(value);
+  void setBoletoBarCode(String barCode) {
+    _boleto = boleto.copyWith(barCode: barCode);
+    notifyListeners();
+  }
 
-  String? validateDueDate(String? value) =>
-      _validateServices.validateDueDate(value);
+  String? validateName() => _validateServices.validateName(_boleto.name);
 
-  String? validatePrice(double? value) =>
-      _validateServices.validatePrice(value);
+  String? validatePrice() => _validateServices.validatePrice(_boleto.price);
 
-  String? validateBarCode(String? value) =>
-      _validateServices.validateBarCode(value);
+  String? validateBarCode() =>
+      _validateServices.validateBarCode(_boleto.barCode);
 
   void onChange({
     String? name,
@@ -51,7 +52,7 @@ class InsertBoletoController with ChangeNotifier {
     String? barCode,
   }) {
     _setError(newState: false);
-    _boleto = boleto.copyWith(
+    _boleto = _boleto.copyWith(
       name: name,
       dueDate: dueDate,
       price: price,
@@ -65,9 +66,7 @@ class InsertBoletoController with ChangeNotifier {
 
     if (form!.validate()) {
       _setIsLoading(newState: true);
-
       final savedBoleto = await _services.saveBoleto(boleto);
-
       return savedBoleto;
     }
   }

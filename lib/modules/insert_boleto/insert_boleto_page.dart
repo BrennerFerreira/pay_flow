@@ -39,6 +39,7 @@ class _InsertBoletoPageState extends State<InsertBoletoPage> {
     _pageController = context.read<InsertBoletoController>();
     if (widget.barCode != null) {
       _barCodeInputTextController.text = widget.barCode!;
+      _pageController.setBoletoBarCode(widget.barCode!);
     }
     fToast = FToast();
     fToast.init(context);
@@ -82,7 +83,7 @@ class _InsertBoletoPageState extends State<InsertBoletoPage> {
                       onChanged: (value) {
                         _pageController.onChange(name: value);
                       },
-                      validator: _pageController.validateName,
+                      validator: (_) => _pageController.validateName(),
                     ),
                     BoletoDatePickerField(),
                     InputTextWidget(
@@ -94,18 +95,20 @@ class _InsertBoletoPageState extends State<InsertBoletoPage> {
                           price: _moneyInputTextController.numberValue,
                         );
                       },
-                      validator: (_) => _pageController.validatePrice(
-                        _moneyInputTextController.numberValue,
-                      ),
+                      validator: (_) => _pageController.validatePrice(),
                     ),
                     InputTextWidget(
                       controller: _barCodeInputTextController,
                       label: "Código",
                       icon: FontAwesomeIcons.barcode,
                       onChanged: (value) {
-                        _pageController.onChange(barCode: value);
+                        _pageController.onChange(
+                          barCode: _barCodeInputTextController.text
+                              .replaceAll(".", "")
+                              .replaceAll(" ", ""),
+                        );
                       },
-                      validator: _pageController.validateBarCode,
+                      validator: (_) => _pageController.validateBarCode(),
                     ),
                   ],
                 ),
