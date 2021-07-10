@@ -1,10 +1,10 @@
-import 'package:boleto_organizer/app/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
+import '../../app/routes/routes_names.dart';
 import '../../app/theme/colors.dart';
 import '../../app/theme/text_styles.dart';
 import '../../shared/widgets/label_buttons_set/label_buttons_set.dart';
