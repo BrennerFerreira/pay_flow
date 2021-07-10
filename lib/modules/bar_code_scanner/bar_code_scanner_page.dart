@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 import '../../app/routes/routes_names.dart';
 import '../../app/theme/colors.dart';
@@ -7,7 +11,6 @@ import '../../app/theme/text_styles.dart';
 import '../../shared/widgets/bottom_sheet_widget/bottom_sheet_widget.dart';
 import '../../shared/widgets/label_buttons_set/label_buttons_set.dart';
 import 'controller/bar_code_scanner_controller.dart';
-import 'controller/status/bar_code_scanner_status.dart';
 
 class BarCodeScannerPage extends StatefulWidget {
   const BarCodeScannerPage({Key? key}) : super(key: key);
@@ -17,8 +20,6 @@ class BarCodeScannerPage extends StatefulWidget {
 }
 
 class _BarCodeScannerPageState extends State<BarCodeScannerPage> {
-  final _controller = BarCodeScannerController();
-
   @override
   void initState() {
     super.initState();
@@ -29,14 +30,14 @@ class _BarCodeScannerPageState extends State<BarCodeScannerPage> {
         statusBarBrightness: Brightness.light,
       ),
     );
-
-    _controller.getAvailableCameras();
-    _controller.statusNotifier.addListener(() {
-      if (_controller.status.hasBarCode) {
+    final controller = context.read<BarCodeScannerController>();
+    controller.startScan();
+    controller.addListener(() {
+      if (controller.status.hasBarCode) {
         Navigator.pushReplacementNamed(
           context,
           INSERT_BOLETO_ROUTE,
-          arguments: _controller.status.barCode,
+          arguments: controller.status.barCode,
         );
       }
     });
@@ -47,16 +48,19 @@ class _BarCodeScannerPageState extends State<BarCodeScannerPage> {
     return SafeArea(
       child: Stack(
         children: [
-          ValueListenableBuilder<BarCodeScannerStatus>(
-            valueListenable: _controller.statusNotifier,
-            builder: (_, status, __) {
-              if (status.canShowCamera) {
-                return Container(
-                  child: _controller.cameraController!.buildPreview(),
+          Consumer<BarCodeScannerController>(
+            builder: (_, controller, __) {
+              if (controller.isLoading) {
+                return const SizedBox(
+                  child: Center(
+                    child: CircularProgressIndicator.adaptive(),
+                  ),
                 );
-              } else {
-                return Container();
               }
+
+              return Container(
+                child: controller.cameraController?.buildPreview(),
+              );
             },
           ),
           RotatedBox(
@@ -93,32 +97,50 @@ class _BarCodeScannerPageState extends State<BarCodeScannerPage> {
                   ),
                 ],
               ),
-              bottomNavigationBar: LabelButtonsSet(
-                primaryLabel: "Inserir código",
-                primaryOnPressed: () {
-                  Navigator.pushReplacementNamed(context, INSERT_BOLETO_ROUTE);
+              bottomNavigationBar: Consumer<BarCodeScannerController>(
+                builder: (context, controller, _) {
+                  return LabelButtonsSet(
+                    primaryLabel: "Inserir código",
+                    primaryOnPressed: () {
+                      Navigator.pushReplacementNamed(
+                        context,
+                        INSERT_BOLETO_ROUTE,
+                      );
+                    },
+                    secondaryLabel: "Procurar na galeria",
+                    secondaryOnPressed: () async {
+                      final image = await ImagePicker().getImage(
+                        source: ImageSource.gallery,
+                      );
+
+                      if (image != null) {
+                        final File imageFile = File(image.path);
+                        controller.scanGalleryImage(imageFile);
+                      }
+                    },
+                  );
                 },
-                secondaryLabel: "Procurar na galeria",
-                secondaryOnPressed: _controller.scanGalleryImage,
               ),
             ),
           ),
-          ValueListenableBuilder<BarCodeScannerStatus>(
-            valueListenable: _controller.statusNotifier,
-            builder: (_, status, __) {
-              if (status.hasError) {
+          Consumer<BarCodeScannerController>(
+            builder: (_, controller, __) {
+              if (controller.status.hasError) {
                 return BottomSheetWidget(
                   title: "Não foi possível identificar um código de barras",
                   subtitle: "Tente novamente ou digite o código do seu boleto",
                   primaryLabel: "Escanear novamente",
-                  primaryOnPressed: _controller.scanWithCamera,
+                  primaryOnPressed:
+                      controller.isLoading ? null : controller.startScan,
                   secondaryLabel: "Digitar código",
-                  secondaryOnPressed: () {
-                    Navigator.pushReplacementNamed(
-                      context,
-                      INSERT_BOLETO_ROUTE,
-                    );
-                  },
+                  secondaryOnPressed: controller.isLoading
+                      ? null
+                      : () {
+                          Navigator.pushReplacementNamed(
+                            context,
+                            INSERT_BOLETO_ROUTE,
+                          );
+                        },
                 );
               } else {
                 return Container();
@@ -132,7 +154,7 @@ class _BarCodeScannerPageState extends State<BarCodeScannerPage> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    context.read<BarCodeScannerController>().dispose();
 
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(

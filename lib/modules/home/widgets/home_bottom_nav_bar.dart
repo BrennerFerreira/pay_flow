@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../app/routes/routes_names.dart';
 import '../../../app/theme/colors.dart';
 import '../controllers/home_controller.dart';
 
 class HomeBottomNavBar extends StatelessWidget {
-  final VoidCallback onScannerPressed;
-
-  const HomeBottomNavBar({
-    Key? key,
-    required this.onScannerPressed,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -36,7 +30,12 @@ class HomeBottomNavBar extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             child: IconButton(
-              onPressed: onScannerPressed,
+              onPressed: () async {
+                await Navigator.pushNamed(
+                  context,
+                  BAR_CODE_SCANNER_ROUTE,
+                );
+              },
               icon: const Icon(Icons.add_box_outlined),
               color: AppColors.background,
             ),
