@@ -18,11 +18,11 @@ class BoletoListTileWidget extends StatelessWidget {
       child: ListTile(
         contentPadding: EdgeInsets.zero,
         title: Text(
-          boleto.name!,
+          boleto.name,
           style: AppTextStyles.titleListTile,
         ),
         subtitle: Text(
-          "Vence em: ${boleto.dueDate!}",
+          "Vence em: ${boleto.dateFormatted}",
           style: AppTextStyles.captionBody,
         ),
         trailing: Text.rich(

@@ -1,21 +1,41 @@
 import 'dart:convert';
 
 class Boleto {
-  final String? name;
-  final String? dueDate;
-  final double? price;
-  final String? barCode;
+  final String name;
+  final DateTime dueDate;
+  final double price;
+  final String barCode;
 
   Boleto({
-    this.name,
-    this.dueDate,
-    this.price,
-    this.barCode,
+    required this.name,
+    required this.dueDate,
+    required this.price,
+    required this.barCode,
   });
+
+  factory Boleto.empty() {
+    return Boleto(
+      name: "",
+      dueDate: DateTime.now(),
+      price: 0.00,
+      barCode: "",
+    );
+  }
+
+  String get priceFormatted => price.toStringAsFixed(2).replaceAll(".", ",");
+
+  String get dateFormatted {
+    final int day = dueDate.day;
+    final int month = dueDate.month;
+    final int year = dueDate.year;
+    final String stringDay = day < 10 ? "0$day" : day.toString();
+    final String stringMonth = month < 10 ? "0$month" : day.toString();
+    return "$stringDay/$stringMonth/$year";
+  }
 
   Boleto copyWith({
     String? name,
-    String? dueDate,
+    DateTime? dueDate,
     double? price,
     String? barCode,
   }) {
@@ -27,12 +47,10 @@ class Boleto {
     );
   }
 
-  String get priceFormatted => price!.toStringAsFixed(2).replaceAll(".", ",");
-
   Map<String, dynamic> toMap() {
     return {
       'name': name,
-      'dueDate': dueDate,
+      'dueDate': dueDate.millisecondsSinceEpoch,
       'price': price,
       'barCode': barCode,
     };
@@ -41,7 +59,7 @@ class Boleto {
   factory Boleto.fromMap(Map<String, dynamic> map) {
     return Boleto(
       name: map['name'] as String,
-      dueDate: map['dueDate'] as String,
+      dueDate: DateTime.fromMillisecondsSinceEpoch(map['dueDate'] as int),
       price: map['price'] as double,
       barCode: map['barCode'] as String,
     );
@@ -49,9 +67,8 @@ class Boleto {
 
   String toJson() => json.encode(toMap());
 
-  factory Boleto.fromJson(String source) => Boleto.fromMap(
-        json.decode(source) as Map<String, dynamic>,
-      );
+  factory Boleto.fromJson(String source) =>
+      Boleto.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {

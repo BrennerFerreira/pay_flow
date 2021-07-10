@@ -21,7 +21,7 @@ class HomePageController with ChangeNotifier {
 
   void onDescriptionPressed() => _onPageChanged(1);
 
-  Future<void> logOut(BuildContext context) async {
+  Future<void> logOut() async {
     await _authController.logOut();
   }
 }

@@ -1,3 +1,5 @@
+import 'package:boleto_organizer/injectable.dart';
+import 'package:boleto_organizer/modules/insert_boleto/controller/insert_boleto_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,11 +15,16 @@ final Map<String, Widget Function(BuildContext)> routes = {
   SPLASH_ROUTE: (_) => SplashPage(),
   LOGIN_ROUTE: (_) => LoginPage(),
   HOME_ROUTE: (_) => HomePage(),
-  BAR_CODE_SCANNER_ROUTE: (context) => ChangeNotifierProvider(
+  BAR_CODE_SCANNER_ROUTE: (context) =>
+      ChangeNotifierProvider<BarCodeScannerController>(
         create: (_) => BarCodeScannerController(),
         builder: (_, __) => const BarCodeScannerPage(),
       ),
-  INSERT_BOLETO_ROUTE: (context) => InsertBoletoPage(
-        barCode: ModalRoute.of(context)?.settings.arguments as String?,
+  INSERT_BOLETO_ROUTE: (context) =>
+      ChangeNotifierProvider<InsertBoletoController>(
+        create: (_) => getIt<InsertBoletoController>(),
+        builder: (context, _) => InsertBoletoPage(
+          barCode: ModalRoute.of(context)?.settings.arguments as String?,
+        ),
       ),
 };

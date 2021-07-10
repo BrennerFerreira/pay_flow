@@ -12,12 +12,20 @@ class BoletoListController with ChangeNotifier {
     getBoletos();
   }
 
+  bool _isLoading = true;
+  bool get isLoading => _isLoading;
+  void _setIsLoading({required bool newState}) {
+    _isLoading = newState;
+    notifyListeners();
+  }
+
   List<Boleto> _boletos = [];
 
   List<Boleto> get boletos => _boletos;
 
   Future<void> getBoletos() async {
+    _setIsLoading(newState: true);
     _boletos = await _services.getBoletos();
-    notifyListeners();
+    _setIsLoading(newState: false);
   }
 }
