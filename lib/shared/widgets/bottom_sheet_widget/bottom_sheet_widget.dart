@@ -7,9 +7,9 @@ import '../label_buttons_set/label_buttons_set.dart';
 
 class BottomSheetWidget extends StatelessWidget {
   final String primaryLabel;
-  final VoidCallback primaryOnPressed;
+  final VoidCallback? primaryOnPressed;
   final String secondaryLabel;
-  final VoidCallback secondaryOnPressed;
+  final VoidCallback? secondaryOnPressed;
   final String title;
   final String subtitle;
 

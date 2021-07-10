@@ -55,14 +55,7 @@ class _HomePageState extends State<HomePage> {
             },
           ),
           body: pages[Provider.of<HomePageController>(context).currentPage],
-          bottomNavigationBar: HomeBottomNavBar(
-            onScannerPressed: () async {
-              await Navigator.pushNamed(
-                context,
-                BAR_CODE_SCANNER_ROUTE,
-              );
-            },
-          ),
+          bottomNavigationBar: HomeBottomNavBar(),
         );
       },
     );

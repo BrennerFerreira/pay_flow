@@ -1,52 +1,92 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:image_picker/image_picker.dart';
 
 import 'status/bar_code_scanner_status.dart';
 
-class BarCodeScannerController {
-  final barCodeScanner = GoogleMlKit.vision.barcodeScanner();
+class BarCodeScannerController with ChangeNotifier {
+  final _barCodeScanner = GoogleMlKit.vision.barcodeScanner();
+  BarCodeScannerStatus _status = BarCodeScannerStatus();
   CameraController? _cameraController;
+  bool _isLoading = true;
 
-  final _statusNotifier =
-      ValueNotifier<BarCodeScannerStatus>(BarCodeScannerStatus());
+  bool get isLoading => _isLoading;
 
-  ValueNotifier<BarCodeScannerStatus> get statusNotifier => _statusNotifier;
+  void _setIsLoading({required bool newState}) {
+    _isLoading = newState;
+    notifyListeners();
+  }
+
+  void _setStatus({
+    String? barCode,
+    String? error,
+    bool? isCameraAvailable,
+    bool? shouldStopScanner,
+  }) {
+    _status = _status.copyWith(
+      barCode: barCode,
+      error: error,
+      isCameraAvailable: isCameraAvailable,
+      shouldStopScanner: shouldStopScanner,
+    );
+    notifyListeners();
+  }
+
   CameraController? get cameraController => _cameraController;
-  BarCodeScannerStatus get status => _statusNotifier.value;
-  set status(BarCodeScannerStatus status) => _statusNotifier.value = status;
+  BarCodeScannerStatus get status => _status;
 
-  Future<void> getAvailableCameras() async {
+  void _stopImageStream() {
+    _setStatus(shouldStopScanner: true);
+    if (_cameraController != null &&
+        _cameraController!.value.isStreamingImages) {
+      _cameraController!.stopImageStream();
+    }
+    notifyListeners();
+  }
+
+  Future<void> startScan() async {
+    _setIsLoading(newState: true);
+    _setStatus(error: "");
     try {
       final response = await availableCameras();
+
+      if (response.isEmpty) {
+        _setStatus(error: "No cameras available");
+        notifyListeners();
+      }
 
       final camera = response.firstWhere(
         (element) => element.lensDirection == CameraLensDirection.back,
       );
 
-      _cameraController = CameraController(
+      _cameraController ??= CameraController(
         camera,
         ResolutionPreset.max,
         enableAudio: false,
       );
 
-      await _cameraController!.initialize();
-      status = BarCodeScannerStatus.availableCamera();
-      scanWithCamera();
+      if (!_cameraController!.value.isInitialized) {
+        await _cameraController!.initialize();
+      }
+      _setStatus(isCameraAvailable: true);
+      _setIsLoading(newState: false);
+      _scanWithCamera();
       _listenCamera();
     } catch (error) {
-      status = BarCodeScannerStatus.error(error.toString());
+      _setStatus(error: error.toString());
+      _stopImageStream();
     }
   }
 
-  void scanWithCamera() {
-    status = BarCodeScannerStatus.availableCamera();
+  void _scanWithCamera() {
     Future.delayed(const Duration(seconds: 20)).then(
       (value) {
         if (!status.hasBarCode) {
-          status = BarCodeScannerStatus.error("Timeout de leitura do boleto");
+          _setStatus(error: "Timeout de leitura do boleto");
+          _stopImageStream();
         }
       },
     );
@@ -100,8 +140,9 @@ class BarCodeScannerController {
               );
 
               _scannerBarCode(inputImageCamera);
-            } catch (error) {
-              print(error);
+            } catch (_) {
+              _setStatus(error: "Failed to find a bar code");
+              _stopImageStream();
             }
           }
         },
@@ -111,7 +152,7 @@ class BarCodeScannerController {
 
   Future<void> _scannerBarCode(InputImage inputImage) async {
     try {
-      final barCodes = await barCodeScanner.processImage(inputImage);
+      final barCodes = await _barCodeScanner.processImage(inputImage);
 
       String? barCode;
 
@@ -119,37 +160,36 @@ class BarCodeScannerController {
         barCode = code.value.displayValue;
       }
 
-      if (barCode != null && status.barCode.isEmpty) {
-        status = BarCodeScannerStatus.barCode(barCode);
-        _cameraController!.dispose();
-        await barCodeScanner.close();
+      if (barCode != null && _status.barCode.isEmpty) {
+        _setIsLoading(newState: true);
+        _setStatus(barCode: barCode);
+        _stopImageStream();
+        _barCodeScanner.close();
+        _cameraController?.dispose();
+        notifyListeners();
       }
 
       return;
     } catch (error) {
-      print("Erro na leitura: $error");
+      _setStatus(
+        error: "Error while trying to read the bar code",
+      );
+      notifyListeners();
     }
   }
 
-  Future<void> scanGalleryImage() async {
-    final response = await ImagePicker().getImage(source: ImageSource.gallery);
-
-    if (response != null) {
-      final inputImage = InputImage.fromFilePath(response.path);
-      _scannerBarCode(inputImage);
-    } else {
-      status = BarCodeScannerStatus.error("No picture selected");
-    }
-
-    return;
+  Future<void> scanGalleryImage(File image) async {
+    _stopImageStream();
+    _setIsLoading(newState: true);
+    final inputImage = InputImage.fromFile(image);
+    _scannerBarCode(inputImage);
   }
 
+  @override
   void dispose() {
-    statusNotifier.dispose();
-    barCodeScanner.close();
-
-    if (status.canShowCamera) {
-      _cameraController!.dispose();
-    }
+    _stopImageStream();
+    _barCodeScanner.close();
+    _cameraController?.dispose();
+    super.dispose();
   }
 }

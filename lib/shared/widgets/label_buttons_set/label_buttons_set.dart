@@ -8,9 +8,9 @@ import '../label_button/label_button.dart';
 
 class LabelButtonsSet extends StatelessWidget {
   final String primaryLabel;
-  final VoidCallback primaryOnPressed;
+  final VoidCallback? primaryOnPressed;
   final String secondaryLabel;
-  final VoidCallback secondaryOnPressed;
+  final VoidCallback? secondaryOnPressed;
   final bool enablePrimaryColor;
   final bool enableSecondaryColor;
 
