@@ -11,13 +11,6 @@ class ValidateServices {
     return _baseValidator(value, "Insira um nome para o seu boleto");
   }
 
-  String? validateDueDate(String? value) {
-    return _baseValidator(
-      value,
-      "Insira a data de vencimento do boleto no formato dia/mês/ano",
-    );
-  }
-
   String? validatePrice(double? value) {
     if (value == null) {
       return "Insira o valor do boleto";
@@ -31,6 +24,15 @@ class ValidateServices {
   }
 
   String? validateBarCode(String? value) {
-    return _baseValidator(value, "Insira o código do seu boleto");
+    final validateNotNotNorEmpty =
+        _baseValidator(value, "Insira o código do seu boleto");
+
+    if (validateNotNotNorEmpty != null) {
+      return validateNotNotNorEmpty;
+    }
+
+    if (value!.length != 47) {
+      return "Insira um código válido para o seu boleto";
+    }
   }
 }
