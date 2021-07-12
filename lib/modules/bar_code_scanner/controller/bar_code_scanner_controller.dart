@@ -42,7 +42,7 @@ class BarCodeScannerController with ChangeNotifier {
   CameraController? get cameraController => _cameraController;
   BarCodeScannerStatus get status => _status;
 
-  void _stopImageStream() {
+  void stopImageStream() {
     _setStatus(shouldStopScanner: true);
 
     if (_cameraController != null &&
@@ -87,7 +87,7 @@ class BarCodeScannerController with ChangeNotifier {
       _listenCamera();
     } catch (error) {
       _setStatus(error: error.toString());
-      _stopImageStream();
+      stopImageStream();
     }
   }
 
@@ -95,7 +95,7 @@ class BarCodeScannerController with ChangeNotifier {
     _timer = Timer(const Duration(seconds: 20), () {
       if (!status.hasBarCode) {
         _setStatus(error: "Timeout de leitura do boleto");
-        _stopImageStream();
+        stopImageStream();
       }
     });
   }
@@ -150,7 +150,7 @@ class BarCodeScannerController with ChangeNotifier {
               _scannerBarCode(inputImageCamera);
             } catch (_) {
               _setStatus(error: "Failed to find a bar code");
-              _stopImageStream();
+              stopImageStream();
             }
           }
         },
@@ -179,7 +179,7 @@ class BarCodeScannerController with ChangeNotifier {
         }
 
         _setStatus(barCode: formattedBarCode);
-        _stopImageStream();
+        stopImageStream();
         _barCodeScanner.close();
         _cameraController?.dispose();
         notifyListeners();
@@ -195,7 +195,7 @@ class BarCodeScannerController with ChangeNotifier {
   }
 
   Future<void> scanGalleryImage(File image) async {
-    _stopImageStream();
+    stopImageStream();
     _setIsLoading(newState: true);
     final inputImage = InputImage.fromFile(image);
     _scannerBarCode(inputImage);
@@ -203,7 +203,7 @@ class BarCodeScannerController with ChangeNotifier {
 
   @override
   void dispose() {
-    _stopImageStream();
+    stopImageStream();
     _barCodeScanner.close();
     _cameraController?.dispose();
     super.dispose();
