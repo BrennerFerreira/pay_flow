@@ -41,8 +41,12 @@ class InsertBoletoController with ChangeNotifier {
 
   Boleto get boleto => _boleto;
 
-  void setBoletoBarCode(String barCode) {
+  void setBoletoBarCode(String barCode, {String? name}) {
     _boleto = Boleto.fromBarCode(barCode);
+
+    if (name != null) {
+      _boleto = _boleto.copyWith(name: name);
+    }
     _setUpdatePrice(newState: true);
     notifyListeners();
   }
@@ -76,7 +80,7 @@ class InsertBoletoController with ChangeNotifier {
 
     if (barCode != null &&
         barCode.replaceAll(RegExp("[^0-9]"), "").length == 47) {
-      setBoletoBarCode(barCode);
+      setBoletoBarCode(barCode, name: _boleto.name);
     }
   }
 
