@@ -1,5 +1,6 @@
 import 'package:animated_card/animated_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 
 import '../../../../../../app/theme/text_styles.dart';
 import '../../../../../../shared/boleto/models/boleto.dart';
@@ -14,6 +15,8 @@ class BoletoListTileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final moneyMask = MoneyMaskedTextController();
+    moneyMask.updateValue(boleto.price);
     return AnimatedCard(
       child: ListTile(
         contentPadding: EdgeInsets.zero,
@@ -31,7 +34,7 @@ class BoletoListTileWidget extends StatelessWidget {
             style: AppTextStyles.trailingRegular,
             children: [
               TextSpan(
-                text: boleto.priceFormatted,
+                text: moneyMask.text,
                 style: AppTextStyles.trailingBold,
               ),
             ],
