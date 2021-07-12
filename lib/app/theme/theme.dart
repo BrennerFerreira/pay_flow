@@ -7,18 +7,12 @@ class AppTheme {
     primaryColor: AppColors.primary,
     scaffoldBackgroundColor: AppColors.background,
     primarySwatch: AppColors.primaryColor,
-    appBarTheme: const AppBarTheme(
-      centerTitle: true,
-    ),
+    appBarTheme: const AppBarTheme(centerTitle: true),
+    errorColor: AppColors.delete,
     brightness: Brightness.light,
   );
-  static final darkTheme = ThemeData(
-    primaryColor: AppColors.primary,
-    scaffoldBackgroundColor: AppColors.background,
-    primarySwatch: AppColors.primaryColor,
-    appBarTheme: const AppBarTheme(
-      centerTitle: true,
-    ),
+
+  static final darkTheme = lightTheme.copyWith(
     brightness: Brightness.dark,
   );
 }
