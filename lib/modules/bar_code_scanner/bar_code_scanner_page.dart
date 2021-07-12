@@ -102,6 +102,7 @@ class _BarCodeScannerPageState extends State<BarCodeScannerPage> {
                   return LabelButtonsSet(
                     primaryLabel: "Inserir código",
                     primaryOnPressed: () {
+                      controller.stopImageStream();
                       Navigator.pushReplacementNamed(
                         context,
                         INSERT_BOLETO_ROUTE,
@@ -133,6 +134,7 @@ class _BarCodeScannerPageState extends State<BarCodeScannerPage> {
                   primaryOnPressed: controller.startScan,
                   secondaryLabel: "Digitar código",
                   secondaryOnPressed: () {
+                    controller.stopImageStream();
                     Navigator.pushReplacementNamed(
                       context,
                       INSERT_BOLETO_ROUTE,
