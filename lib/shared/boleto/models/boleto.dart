@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:boleto_organizer/shared/boleto/helpers/convert_bar_code_string.dart';
+import 'package:boleto_organizer/shared/boleto/helpers/get_due_date_and_value_from_bar_code.dart';
 
 class Boleto {
   final String name;
@@ -24,7 +25,21 @@ class Boleto {
     );
   }
 
+  factory Boleto.fromBarCode(String barCode) {
+    final boletoData = GetDataFromBarCode(barCode);
+    final dueDate = boletoData.getDueDate();
+    final value = boletoData.getValue();
+
+    return Boleto(
+      barCode: barCode,
+      dueDate: dueDate ?? DateTime.now(),
+      price: value ?? 0.00,
+      name: "",
+    );
+  }
+
   String get priceFormatted => price.toStringAsFixed(2).replaceAll(".", ",");
+  String get barCodeRaw => barCode.replaceAll(RegExp("[^0-9]"), "");
 
   String get dateFormatted {
     final int day = dueDate.day;

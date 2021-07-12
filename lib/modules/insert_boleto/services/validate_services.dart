@@ -24,14 +24,14 @@ class ValidateServices {
   }
 
   String? validateBarCode(String? value) {
-    final validateNotNotNorEmpty =
+    final validateNotNullNorEmpty =
         _baseValidator(value, "Insira o código do seu boleto");
 
-    if (validateNotNotNorEmpty != null) {
-      return validateNotNotNorEmpty;
+    if (validateNotNullNorEmpty != null) {
+      return validateNotNullNorEmpty;
     }
 
-    if (value!.length != 47) {
+    if (value!.replaceAll(RegExp("[^0-9]"), "").length != 47) {
       return "Insira um código válido para o seu boleto";
     }
   }

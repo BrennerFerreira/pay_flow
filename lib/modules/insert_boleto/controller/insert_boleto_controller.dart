@@ -34,7 +34,7 @@ class InsertBoletoController with ChangeNotifier {
   Boleto get boleto => _boleto;
 
   void setBoletoBarCode(String barCode) {
-    _boleto = boleto.copyWith(barCode: barCode);
+    _boleto = Boleto.fromBarCode(barCode);
     notifyListeners();
   }
 

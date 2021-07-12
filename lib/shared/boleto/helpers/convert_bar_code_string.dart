@@ -9,9 +9,9 @@ class ConvertBarCodeString {
     }
 
     final String field1 =
-        "${row.substring(0, 4)}${row.substring(19, 20)}${row.substring(20, 24)}";
-    final String field2 = "${row.substring(24, 29)}${row.substring(29, 34)}";
-    final String field3 = "${row.substring(34, 39)}${row.substring(39, 44)}";
+        "${row.substring(0, 4)}${row.substring(19, 20)}.${row.substring(20, 24)}";
+    final String field2 = "${row.substring(24, 29)}.${row.substring(29, 34)}";
+    final String field3 = "${row.substring(34, 39)}.${row.substring(39, 44)}";
     final String field4 = row.substring(4, 5); // Digito verificador
     final String field5 = row.substring(5, 19); // Vencimento + Valor
 
@@ -23,8 +23,8 @@ class ConvertBarCodeString {
       return null;
     }
 
-    return "$field1${_module10(field1)}$field2${_module10(field2)}"
-        "$field3${_module10(field3)}$field4$field5";
+    return "$field1${_module10(field1)} $field2${_module10(field2)} "
+        "$field3${_module10(field3)} $field4 $field5";
   }
 
   static int _module10(String numberRaw) {
