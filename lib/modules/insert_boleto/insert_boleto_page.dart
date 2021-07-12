@@ -38,14 +38,21 @@ class _InsertBoletoPageState extends State<InsertBoletoPage> {
   void initState() {
     super.initState();
     _pageController = context.read<InsertBoletoController>();
+
     if (widget.barCode != null) {
       _barCodeInputTextController.text =
           widget.barCode!.replaceAll(_regExp, "");
 
       _pageController.setBoletoBarCode(widget.barCode!);
-
       _moneyInputTextController.updateValue(_pageController.boleto.price);
     }
+
+    _pageController.addListener(() {
+      if (_pageController.updatePrice) {
+        _moneyInputTextController.updateValue(_pageController.boleto.price);
+      }
+    });
+
     fToast = FToast();
     fToast.init(context);
   }
@@ -90,6 +97,17 @@ class _InsertBoletoPageState extends State<InsertBoletoPage> {
                       },
                       validator: (_) => _pageController.validateName(),
                     ),
+                    InputTextWidget(
+                      controller: _barCodeInputTextController,
+                      label: "Código",
+                      icon: FontAwesomeIcons.barcode,
+                      onChanged: (_) {
+                        _pageController.onBarCodeChange(
+                          _barCodeInputTextController.text,
+                        );
+                      },
+                      validator: (_) => _pageController.validateBarCode(),
+                    ),
                     BoletoDatePickerField(),
                     InputTextWidget(
                       controller: _moneyInputTextController,
@@ -101,17 +119,6 @@ class _InsertBoletoPageState extends State<InsertBoletoPage> {
                         );
                       },
                       validator: (_) => _pageController.validatePrice(),
-                    ),
-                    InputTextWidget(
-                      controller: _barCodeInputTextController,
-                      label: "Código",
-                      icon: FontAwesomeIcons.barcode,
-                      onChanged: (value) {
-                        _pageController.onChange(
-                          barCode: _barCodeInputTextController.text,
-                        );
-                      },
-                      validator: (_) => _pageController.validateBarCode(),
                     ),
                   ],
                 ),

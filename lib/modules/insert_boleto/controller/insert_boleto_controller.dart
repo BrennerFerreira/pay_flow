@@ -14,12 +14,15 @@ class InsertBoletoController with ChangeNotifier {
   Boleto _boleto = Boleto.empty();
   bool _error = false;
   bool _isLoading = false;
+  bool _updatePrice = false;
   final ISaveBoletoServices _services;
   final _validateServices = ValidateServices();
 
   bool get isLoading => _isLoading;
 
   bool get error => _error;
+
+  bool get updatePrice => _updatePrice;
 
   void _setIsLoading({required bool newState}) {
     _isLoading = newState;
@@ -31,10 +34,16 @@ class InsertBoletoController with ChangeNotifier {
     notifyListeners();
   }
 
+  void _setUpdatePrice({required bool newState}) {
+    _updatePrice = newState;
+    notifyListeners();
+  }
+
   Boleto get boleto => _boleto;
 
   void setBoletoBarCode(String barCode) {
     _boleto = Boleto.fromBarCode(barCode);
+    _setUpdatePrice(newState: true);
     notifyListeners();
   }
 
@@ -59,6 +68,16 @@ class InsertBoletoController with ChangeNotifier {
       barCode: barCode,
     );
     notifyListeners();
+  }
+
+  void onBarCodeChange(String? barCode) {
+    _setError(newState: false);
+    _boleto = _boleto.copyWith(barCode: barCode);
+
+    if (barCode != null &&
+        barCode.replaceAll(RegExp("[^0-9]"), "").length == 47) {
+      setBoletoBarCode(barCode);
+    }
   }
 
   Future<Boleto?> submitBoleto() async {
