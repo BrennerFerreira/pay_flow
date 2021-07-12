@@ -24,7 +24,6 @@ class InsertBoletoPage extends StatefulWidget {
 
 class _InsertBoletoPageState extends State<InsertBoletoPage> {
   final _regExp = RegExp("[^0-9]");
-  late InsertBoletoController _pageController;
   late FToast fToast;
 
   final _moneyInputTextController =
@@ -37,7 +36,7 @@ class _InsertBoletoPageState extends State<InsertBoletoPage> {
   @override
   void initState() {
     super.initState();
-    _pageController = context.read<InsertBoletoController>();
+    final _pageController = context.read<InsertBoletoController>();
 
     if (widget.barCode != null) {
       _barCodeInputTextController.text =
@@ -59,98 +58,113 @@ class _InsertBoletoPageState extends State<InsertBoletoPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.background,
-        elevation: 0,
-        leading: BackButton(
-          color: AppColors.input,
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(30.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 60,
-                  vertical: 24,
+    return Consumer<InsertBoletoController>(builder: (context, controller, _) {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColors.background,
+          elevation: 0,
+          leading: controller.isLoading
+              ? null
+              : BackButton(
+                  color: AppColors.input,
                 ),
-                child: Text(
-                  "Preencha os dados do boleto",
-                  style: AppTextStyles.titleBold,
-                  textAlign: TextAlign.center,
+        ),
+        body: controller.isLoading
+            ? const Center(
+                child: CircularProgressIndicator.adaptive(),
+              )
+            : SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(30.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 60,
+                          vertical: 24,
+                        ),
+                        child: Text(
+                          "Preencha os dados do boleto",
+                          style: AppTextStyles.titleBold,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Form(
+                        key: controller.formKey,
+                        child: Column(
+                          children: [
+                            InputTextWidget(
+                              label: "Nome do boleto",
+                              icon: Icons.description_outlined,
+                              textInputType: TextInputType.name,
+                              enabled: !controller.isLoading,
+                              onChanged: (value) {
+                                controller.onChange(name: value);
+                              },
+                              validator: (_) => controller.validateName(),
+                            ),
+                            InputTextWidget(
+                              controller: _barCodeInputTextController,
+                              label: "Código",
+                              icon: FontAwesomeIcons.barcode,
+                              enabled: !controller.isLoading,
+                              onChanged: (_) {
+                                controller.onBarCodeChange(
+                                  _barCodeInputTextController.text,
+                                );
+                              },
+                              validator: (_) => controller.validateBarCode(),
+                            ),
+                            BoletoDatePickerField(),
+                            InputTextWidget(
+                              controller: _moneyInputTextController,
+                              label: "Valor",
+                              icon: FontAwesomeIcons.wallet,
+                              enabled: !controller.isLoading,
+                              onChanged: (_) {
+                                controller.onChange(
+                                  price: _moneyInputTextController.numberValue,
+                                );
+                              },
+                              validator: (_) => controller.validatePrice(),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              Form(
-                key: _pageController.formKey,
-                child: Column(
-                  children: [
-                    InputTextWidget(
-                      label: "Nome do boleto",
-                      icon: Icons.description_outlined,
-                      textInputType: TextInputType.name,
-                      onChanged: (value) {
-                        _pageController.onChange(name: value);
-                      },
-                      validator: (_) => _pageController.validateName(),
-                    ),
-                    InputTextWidget(
-                      controller: _barCodeInputTextController,
-                      label: "Código",
-                      icon: FontAwesomeIcons.barcode,
-                      onChanged: (_) {
-                        _pageController.onBarCodeChange(
-                          _barCodeInputTextController.text,
-                        );
-                      },
-                      validator: (_) => _pageController.validateBarCode(),
-                    ),
-                    BoletoDatePickerField(),
-                    InputTextWidget(
-                      controller: _moneyInputTextController,
-                      label: "Valor",
-                      icon: FontAwesomeIcons.wallet,
-                      onChanged: (_) {
-                        _pageController.onChange(
-                          price: _moneyInputTextController.numberValue,
-                        );
-                      },
-                      validator: (_) => _pageController.validatePrice(),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: LabelButtonsSet(
-        primaryLabel: "Cancelar",
-        primaryOnPressed: () {
-          Navigator.pop(context);
-        },
-        secondaryLabel: "Cadastrar",
-        secondaryOnPressed: () async {
-          final newBoleto = await _pageController.submitBoleto();
+        bottomNavigationBar: LabelButtonsSet(
+          primaryLabel: "Cancelar",
+          primaryOnPressed: controller.isLoading
+              ? null
+              : () {
+                  Navigator.pop(context);
+                },
+          secondaryLabel: "Cadastrar",
+          secondaryOnPressed: controller.isLoading
+              ? null
+              : () async {
+                  final newBoleto = await controller.submitBoleto();
 
-          if (newBoleto == null) {
-            fToast.showToast(
-              child: ErrorToast(),
-              gravity: ToastGravity.BOTTOM,
-              toastDuration: const Duration(seconds: 2),
-            );
-          } else {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              HOME_ROUTE,
-              (route) => false,
-            );
-          }
-        },
-        enableSecondaryColor: true,
-      ),
-    );
+                  if (newBoleto == null) {
+                    fToast.showToast(
+                      child: ErrorToast(),
+                      gravity: ToastGravity.BOTTOM,
+                      toastDuration: const Duration(seconds: 2),
+                    );
+                  } else {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      HOME_ROUTE,
+                      (route) => false,
+                    );
+                  }
+                },
+          enableSecondaryColor: true,
+        ),
+      );
+    });
   }
 }
