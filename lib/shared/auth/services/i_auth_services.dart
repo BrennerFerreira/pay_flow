@@ -1,4 +1,4 @@
-import 'package:boleto_organizer/shared/user/models/user.dart';
+import '../../user/models/user.dart';
 
 abstract class IAuthServices {
   Future<User?> googleSignIn();

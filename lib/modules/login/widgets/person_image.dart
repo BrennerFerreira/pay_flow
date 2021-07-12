@@ -1,7 +1,7 @@
 import 'package:animated_card/animated_card.dart';
-import 'package:boleto_organizer/app/theme/colors.dart';
 import 'package:flutter/material.dart';
 
+import '../../../app/theme/colors.dart';
 import '../../../app/theme/images.dart';
 
 class PersonImage extends StatelessWidget {

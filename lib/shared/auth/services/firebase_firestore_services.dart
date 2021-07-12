@@ -1,7 +1,8 @@
-import 'package:boleto_organizer/shared/constants/constants.dart';
-import 'package:boleto_organizer/shared/user/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
+
+import '../../constants/constants.dart';
+import '../../user/models/user.dart';
 
 @injectable
 class FirebaseFirestoreServices {

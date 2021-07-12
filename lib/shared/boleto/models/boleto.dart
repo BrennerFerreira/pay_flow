@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:boleto_organizer/shared/boleto/helpers/convert_bar_code_string.dart';
-import 'package:boleto_organizer/shared/boleto/helpers/get_due_date_and_value_from_bar_code.dart';
+import '../helpers/convert_bar_code_string.dart';
+import '../helpers/get_due_date_and_value_from_bar_code.dart';
 
 class Boleto {
   final String name;
