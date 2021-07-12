@@ -15,6 +15,7 @@ class InputTextWidget extends StatelessWidget {
   final void Function(String value) onChanged;
   final TextCapitalization textCapitalization;
   final TextInputType textInputType;
+  final bool enabled;
 
   const InputTextWidget({
     Key? key,
@@ -24,6 +25,7 @@ class InputTextWidget extends StatelessWidget {
     this.initialValue,
     this.validator,
     this.controller,
+    this.enabled = true,
     this.textCapitalization = TextCapitalization.sentences,
     this.textInputType = TextInputType.number,
   }) : super(key: key);
@@ -56,6 +58,7 @@ class InputTextWidget extends StatelessWidget {
                     ),
                   ],
                 ),
+                enabled: enabled,
                 labelText: label,
                 labelStyle: AppTextStyles.input,
                 border: InputBorder.none,

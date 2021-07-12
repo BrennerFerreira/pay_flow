@@ -23,20 +23,22 @@ class BoletoDatePickerField extends StatelessWidget {
             return Column(
               children: [
                 GestureDetector(
-                  onTap: () async {
-                    final newDate = await showDatePicker(
-                        context: context,
-                        initialDate: controller.boleto.dueDate,
-                        firstDate: DateTime(2010),
-                        lastDate: DateTime(2100),
-                        cancelText: "Cancelar",
-                        confirmText: "Confirmar",
-                        locale: const Locale("pt", "BR"));
+                  onTap: controller.isLoading
+                      ? null
+                      : () async {
+                          final newDate = await showDatePicker(
+                              context: context,
+                              initialDate: controller.boleto.dueDate,
+                              firstDate: DateTime(2010),
+                              lastDate: DateTime(2100),
+                              cancelText: "Cancelar",
+                              confirmText: "Confirmar",
+                              locale: const Locale("pt", "BR"));
 
-                    if (newDate != null) {
-                      controller.onChange(dueDate: newDate);
-                    }
-                  },
+                          if (newDate != null) {
+                            controller.onChange(dueDate: newDate);
+                          }
+                        },
                   child: TextFormField(
                     controller: _fieldController,
                     decoration: InputDecoration(
