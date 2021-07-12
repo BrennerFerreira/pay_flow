@@ -36,4 +36,35 @@ class FirebaseFirestoreBoletoListservices {
 
     return userDocBoletos;
   }
+
+  Future<bool> deleteBoleto(Boleto boleto) async {
+    try {
+      final userId = _auth.currentUser!.uid;
+
+      final userDoc = _firestore.collection(USERS_STRING).doc(userId);
+
+      final userDocData = await userDoc.get();
+
+      final userData = userDocData.data()!;
+
+      final oldBoletosListMap = List.castFrom<dynamic, Map<String, dynamic>>(
+          userData[BOLETOS_STRING] as List);
+
+      final boletosList = oldBoletosListMap.map((e) {
+        return Boleto.fromMap(e);
+      }).toList();
+
+      boletosList.remove(boleto);
+
+      final newBoletosListMap = boletosList.map((e) => e.toMap()).toList();
+
+      await userDoc.set({
+        BOLETOS_STRING: newBoletosListMap,
+      }, SetOptions(merge: true));
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 }

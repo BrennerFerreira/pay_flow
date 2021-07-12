@@ -6,6 +6,7 @@ class AppColors {
   static const delete = Color(0xFFE83F5B);
   static const black = Color(0xFF000000);
   static const white = Color(0xFFFFFFFF);
+  static const green = Color(0xFF499F68);
   static const _lightTitle = Color(0xFF585666);
   static const _lightBody = Color(0xFF706E7A);
   static const _lightStroke = Color(0xFFE3E3E6);

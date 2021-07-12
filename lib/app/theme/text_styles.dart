@@ -14,6 +14,11 @@ class AppTextStyles {
     fontWeight: FontWeight.w400,
     color: AppColors.background,
   );
+  static final titleRegular = GoogleFonts.lexendDeca(
+    fontSize: 20,
+    fontWeight: FontWeight.w400,
+    color: AppColors.title,
+  );
   static final titleBold = GoogleFonts.lexendDeca(
     fontSize: 20,
     fontWeight: FontWeight.w600,
@@ -93,5 +98,10 @@ class AppTextStyles {
     fontSize: 15,
     fontWeight: FontWeight.w400,
     color: AppColors.input,
+  );
+  static final delete = GoogleFonts.inter(
+    fontSize: 15,
+    fontWeight: FontWeight.w400,
+    color: AppColors.delete,
   );
 }

@@ -6,11 +6,16 @@ import 'i_boleto_list_services.dart';
 
 @Injectable(as: IBoletoListServices)
 class BoletoListServices implements IBoletoListServices {
-  final FirebaseFirestoreBoletoListservices _boletoListservices;
+  final FirebaseFirestoreBoletoListservices _firebaseBoletoListservices;
 
-  BoletoListServices(this._boletoListservices);
+  BoletoListServices(this._firebaseBoletoListservices);
   @override
   Stream<List<Boleto>> getBoletos() {
-    return _boletoListservices.getBoletos();
+    return _firebaseBoletoListservices.getBoletos();
+  }
+
+  @override
+  Future<bool> deleteBoleto(Boleto boleto) async {
+    return _firebaseBoletoListservices.deleteBoleto(boleto);
   }
 }
