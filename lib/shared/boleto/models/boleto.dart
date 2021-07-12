@@ -46,7 +46,7 @@ class Boleto {
     final int month = dueDate.month;
     final int year = dueDate.year;
     final String stringDay = day < 10 ? "0$day" : day.toString();
-    final String stringMonth = month < 10 ? "0$month" : day.toString();
+    final String stringMonth = month < 10 ? "0$month" : month.toString();
     return "$stringDay/$stringMonth/$year";
   }
 
