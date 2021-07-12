@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../app/routes/routes_names.dart';
 import '../../injectable.dart';
 import '../../shared/auth/controller/auth_controller.dart';
+import '../../shared/loading_page/loading_page.dart';
 import '../../shared/user/models/user.dart';
 import 'controllers/boleto_list_controller.dart';
 import 'controllers/home_controller.dart';
@@ -49,22 +50,25 @@ class _HomePageState extends State<HomePage> {
         )
       ],
       builder: (_, __) {
-        return Consumer<BoletoListController>(
-          builder: (context, boletoList, __) {
-            return Scaffold(
-              appBar: HomeAppBar.appBar(
-                user: user,
-                onLogOut: () {
-                  context.read<HomePageController>().logOut();
-                },
-              ),
-              body: boletoList.isLoading
-                  ? const Center(
-                      child: CircularProgressIndicator.adaptive(),
-                    )
-                  : pages[Provider.of<HomePageController>(context).currentPage],
-              bottomNavigationBar: HomeBottomNavBar(),
-            );
+        return Consumer2<AuthController, BoletoListController>(
+          builder: (context, auth, boletoList, __) {
+            return auth.loading
+                ? LoadingPage()
+                : Scaffold(
+                    appBar: HomeAppBar.appBar(
+                      user: user,
+                      onLogOut: () {
+                        context.read<HomePageController>().logOut();
+                      },
+                    ),
+                    body: boletoList.isLoading
+                        ? const Center(
+                            child: CircularProgressIndicator.adaptive(),
+                          )
+                        : pages[Provider.of<HomePageController>(context)
+                            .currentPage],
+                    bottomNavigationBar: HomeBottomNavBar(),
+                  );
           },
         );
       },
