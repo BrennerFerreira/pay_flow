@@ -1,3 +1,4 @@
+import 'package:boleto_organizer/shared/boleto/models/boleto.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,14 +10,33 @@ class BoletoListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<BoletoListController>(
       builder: (_, boletoList, __) {
-        return ListView.builder(
-          itemCount: boletoList.boletos.length,
-          itemBuilder: (context, index) {
-            return BoletoListTileWidget(
-              boleto: boletoList.boletos[index],
-            );
-          },
-        );
+        return StreamBuilder<List<Boleto>>(
+            stream: boletoList.getBoletos(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator.adaptive(),
+                );
+              }
+
+              if (snapshot.hasError) {
+                return const Center(
+                  child: Text(
+                    "Erro ao buscar os boletos salvos. Por favor, tente novamente",
+                    textAlign: TextAlign.center,
+                  ),
+                );
+              }
+
+              return ListView.builder(
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  return BoletoListTileWidget(
+                    boleto: snapshot.data![index],
+                  );
+                },
+              );
+            });
       },
     );
   }
