@@ -10,12 +10,12 @@ class BoletoListController with ChangeNotifier {
 
   BoletoListController(this._services);
 
-  final bool _isLoading = false;
+  bool _isLoading = false;
   bool get isLoading => _isLoading;
-  // void _setIsLoading({required bool newState}) {
-  //   _isLoading = newState;
-  //   notifyListeners();
-  // }
+  void _setIsLoading({required bool newState}) {
+    _isLoading = newState;
+    notifyListeners();
+  }
 
   Stream<List<Boleto>> getBoletos() {
     return _services.getBoletos();
@@ -23,5 +23,12 @@ class BoletoListController with ChangeNotifier {
 
   Stream<int> boletosLength() {
     return getBoletos().map((event) => event.length);
+  }
+
+  Future<bool> deleteBoleto(Boleto boleto) async {
+    _setIsLoading(newState: true);
+    final result = await _services.deleteBoleto(boleto);
+    _setIsLoading(newState: false);
+    return result;
   }
 }
