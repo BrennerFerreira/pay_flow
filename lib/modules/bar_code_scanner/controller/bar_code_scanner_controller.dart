@@ -170,7 +170,15 @@ class BarCodeScannerController with ChangeNotifier {
 
       if (barCode != null && _status.barCode.isEmpty) {
         _setIsLoading(newState: true);
-        _setStatus(barCode: ConvertBarCodeString.calculateRow(barCode));
+        final String? formattedBarCode =
+            ConvertBarCodeString.calculateRow(barCode);
+
+        if (formattedBarCode == null) {
+          _setStatus(error: "Could not convert bar code");
+          return;
+        }
+
+        _setStatus(barCode: formattedBarCode);
         _stopImageStream();
         _barCodeScanner.close();
         _cameraController?.dispose();

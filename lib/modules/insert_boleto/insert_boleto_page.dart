@@ -23,11 +23,12 @@ class InsertBoletoPage extends StatefulWidget {
 }
 
 class _InsertBoletoPageState extends State<InsertBoletoPage> {
+  final _regExp = RegExp("[^0-9]");
   late InsertBoletoController _pageController;
   late FToast fToast;
 
   final _moneyInputTextController =
-      MoneyMaskedTextController(leftSymbol: "R\$");
+      MoneyMaskedTextController(leftSymbol: "R\$ ");
 
   final _barCodeInputTextController = MaskedTextController(
     mask: "00000.00000 00000.000000 00000.000000 0 00000000000000",
@@ -38,8 +39,12 @@ class _InsertBoletoPageState extends State<InsertBoletoPage> {
     super.initState();
     _pageController = context.read<InsertBoletoController>();
     if (widget.barCode != null) {
-      _barCodeInputTextController.text = widget.barCode!;
+      _barCodeInputTextController.text =
+          widget.barCode!.replaceAll(_regExp, "");
+
       _pageController.setBoletoBarCode(widget.barCode!);
+
+      _moneyInputTextController.updateValue(_pageController.boleto.price);
     }
     fToast = FToast();
     fToast.init(context);
@@ -103,9 +108,7 @@ class _InsertBoletoPageState extends State<InsertBoletoPage> {
                       icon: FontAwesomeIcons.barcode,
                       onChanged: (value) {
                         _pageController.onChange(
-                          barCode: _barCodeInputTextController.text
-                              .replaceAll(".", "")
-                              .replaceAll(" ", ""),
+                          barCode: _barCodeInputTextController.text,
                         );
                       },
                       validator: (_) => _pageController.validateBarCode(),
