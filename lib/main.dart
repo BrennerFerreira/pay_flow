@@ -1,8 +1,8 @@
-import 'package:boleto_organizer/injectable.dart';
 import 'package:flutter/material.dart';
 
 import 'app/firebase_app.dart';
 import 'flavor.dart';
+import 'injectable.dart';
 
 void main() {
   configureDependencies();

@@ -1,11 +1,11 @@
-import 'package:boleto_organizer/injectable.dart';
-import 'package:boleto_organizer/modules/insert_boleto/controller/insert_boleto_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../injectable.dart';
 import '../../modules/bar_code_scanner/bar_code_scanner_page.dart';
 import '../../modules/bar_code_scanner/controller/bar_code_scanner_controller.dart';
 import '../../modules/home/home_page.dart';
+import '../../modules/insert_boleto/controller/insert_boleto_controller.dart';
 import '../../modules/insert_boleto/insert_boleto_page.dart';
 import '../../modules/login/login_page.dart';
 import '../../modules/splash/splash_page.dart';
