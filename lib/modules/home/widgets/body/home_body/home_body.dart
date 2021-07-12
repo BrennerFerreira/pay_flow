@@ -24,10 +24,21 @@ class HomeBody extends StatelessWidget {
                 ),
                 Consumer<BoletoListController>(
                   builder: (_, boletoList, __) {
-                    return Text(
-                      "${boletoList.boletos.length} a pagar",
-                      style: AppTextStyles.trailingRegular,
-                    );
+                    return StreamBuilder<int>(
+                        stream: boletoList.boletosLength(),
+                        initialData: 0,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                                  ConnectionState.waiting ||
+                              snapshot.hasError) {
+                            return Container();
+                          }
+
+                          return Text(
+                            "${snapshot.data} a pagar",
+                            style: AppTextStyles.trailingRegular,
+                          );
+                        });
                   },
                 )
               ],
