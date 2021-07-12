@@ -1,22 +1,18 @@
 import 'package:injectable/injectable.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../injectable.dart';
 import '../../../shared/boleto/models/boleto.dart';
+import 'firebase_firestore_save_boleto_services.dart';
 import 'i_save_boleto_services.dart';
 
 @Injectable(as: ISaveBoletoServices)
 class SaveBoletoServices implements ISaveBoletoServices {
+  final FirebaseFirestoreSaveBoletoServices _saveBoletoServices;
+
+  SaveBoletoServices(this._saveBoletoServices);
   @override
   Future<Boleto?> saveBoleto(Boleto boleto) async {
-    try {
-      final instance = getIt<SharedPreferences>();
-      final boletos = instance.getStringList("boletos") ?? <String>[];
-      boletos.add(boleto.toJson());
-      await instance.setStringList("boletos", boletos);
-      return boleto;
-    } catch (_) {
-      return null;
-    }
+    final savedBoleto = await _saveBoletoServices.saveBoleto(boleto);
+
+    return savedBoleto;
   }
 }
