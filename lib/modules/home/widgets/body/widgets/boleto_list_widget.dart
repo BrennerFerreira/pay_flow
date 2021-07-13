@@ -6,12 +6,20 @@ import '../../../controllers/boleto_list_controller.dart';
 import 'boleto_list_tile_widget.dart';
 
 class BoletoListWidget extends StatelessWidget {
+  final bool showPaidBoletos;
+
+  const BoletoListWidget({
+    Key? key,
+    this.showPaidBoletos = false,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Consumer<BoletoListController>(
       builder: (_, boletoList, __) {
         return StreamBuilder<List<Boleto>>(
-            stream: boletoList.getBoletos(),
+            stream: showPaidBoletos
+                ? boletoList.getPaidBoletos()
+                : boletoList.getUnpaidBoletos(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(

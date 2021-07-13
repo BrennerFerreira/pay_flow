@@ -63,71 +63,58 @@ class BoletoBottomSheet extends StatelessWidget {
                     style: AppTextStyles.titleBold,
                   ),
                   TextSpan(
-                    text: "foi pago?",
+                    text: boleto.paid ? "foi pago em " : "foi pago?",
                     style: AppTextStyles.titleRegular,
                   ),
+                  if (boleto.paid)
+                    TextSpan(
+                      text: boleto.paidAtDateFormatted,
+                      style: AppTextStyles.titleBold,
+                    ),
                 ],
               ),
               textAlign: TextAlign.center,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 24.0),
-              child: Provider.of<BoletoListController>(context).isLoading
-                  ? const Center(
-                      child: CircularProgressIndicator.adaptive(),
-                    )
-                  : Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: StyledLabelButton(
-                              label: "Ainda não",
-                              onPressed: !boleto.paid
-                                  ? () {
-                                      Navigator.of(context).pop();
-                                    }
-                                  : () async {
-                                      await Provider.of<BoletoListController>(
-                                        context,
-                                        listen: false,
-                                      ).updateBoletoPaid(
-                                        boleto,
-                                        isPaid: false,
-                                      );
-                                      Navigator.of(context).pop();
-                                    },
+            if (!boleto.paid)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 24.0),
+                child: Provider.of<BoletoListController>(context).isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator.adaptive(),
+                      )
+                    : Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: StyledLabelButton(
+                                label: "Ainda não",
+                                onPressed: Navigator.of(context).pop,
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: StyledLabelButton(
-                              label: "Sim",
-                              onPressed: boleto.paid
-                                  ? () {
-                                      Navigator.of(context).pop();
-                                    }
-                                  : () async {
-                                      await Provider.of<BoletoListController>(
-                                        context,
-                                        listen: false,
-                                      ).updateBoletoPaid(
-                                        boleto,
-                                        isPaid: true,
-                                      );
-                                      Navigator.of(context).pop();
-                                    },
-                              isPrimary: true,
+                          Expanded(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: StyledLabelButton(
+                                label: "Sim",
+                                onPressed: () async {
+                                  await Provider.of<BoletoListController>(
+                                    context,
+                                    listen: false,
+                                  ).updateBoletoPaid(boleto);
+                                  Navigator.of(context).pop();
+                                },
+                                isPrimary: true,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-            ),
+                        ],
+                      ),
+              ),
+            if (boleto.paid) const SizedBox(height: 24),
             HorizontalDividerWidget(),
             InkWell(
               onTap: Provider.of<BoletoListController>(context).isLoading
