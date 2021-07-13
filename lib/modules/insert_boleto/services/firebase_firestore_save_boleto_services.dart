@@ -31,7 +31,7 @@ class FirebaseFirestoreSaveBoletoServices {
       } else {
         userDoc.set(
           {
-            BOLETOS_STRING: boleto.toMap(),
+            BOLETOS_STRING: [boleto.toMap()],
           },
           SetOptions(merge: true),
         );
