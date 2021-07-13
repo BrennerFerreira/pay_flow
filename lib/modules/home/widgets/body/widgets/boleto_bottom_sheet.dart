@@ -8,9 +8,8 @@ import '../../../../../app/theme/colors.dart';
 import '../../../../../app/theme/text_styles.dart';
 import '../../../../../shared/boleto/models/boleto.dart';
 import '../../../../../shared/widgets/dividers/horizontal_divider_widget.dart';
-import '../../../../../shared/widgets/label_button/label_button.dart';
 import '../../../controllers/boleto_list_controller.dart';
-import 'delete_error_toast.dart';
+import 'delete_dialog.dart';
 import 'styled_label_button.dart';
 
 class BoletoBottomSheet extends StatelessWidget {
@@ -73,102 +72,89 @@ class BoletoBottomSheet extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 24.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: StyledLabelButton(
-                        label: "Ainda não",
-                        onPressed: Navigator.of(context).pop,
-                      ),
+              child: Provider.of<BoletoListController>(context).isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator.adaptive(),
+                    )
+                  : Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: StyledLabelButton(
+                              label: "Ainda não",
+                              onPressed: !boleto.paid
+                                  ? () {
+                                      Navigator.of(context).pop();
+                                    }
+                                  : () async {
+                                      await Provider.of<BoletoListController>(
+                                        context,
+                                        listen: false,
+                                      ).updateBoletoPaid(
+                                        boleto,
+                                        isPaid: false,
+                                      );
+                                      Navigator.of(context).pop();
+                                    },
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: StyledLabelButton(
+                              label: "Sim",
+                              onPressed: boleto.paid
+                                  ? () {
+                                      Navigator.of(context).pop();
+                                    }
+                                  : () async {
+                                      await Provider.of<BoletoListController>(
+                                        context,
+                                        listen: false,
+                                      ).updateBoletoPaid(
+                                        boleto,
+                                        isPaid: true,
+                                      );
+                                      Navigator.of(context).pop();
+                                    },
+                              isPrimary: true,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: StyledLabelButton(
-                        label: "Sim",
-                        onPressed: () {},
-                        isPrimary: true,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
             ),
             HorizontalDividerWidget(),
             InkWell(
-              onTap: () {
-                final provider =
-                    Provider.of<BoletoListController>(context, listen: false);
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return ChangeNotifierProvider.value(
-                      value: provider,
-                      child: Builder(
-                        builder: (context) {
-                          return AlertDialog(
-                            backgroundColor: AppColors.background,
-                            title: Text(
-                              "Excluir boleto",
-                              style: AppTextStyles.titleBold,
-                            ),
-                            content: Provider.of<BoletoListController>(context)
-                                    .isLoading
-                                ? SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.2,
-                                    child: const Center(
-                                      child:
-                                          CircularProgressIndicator.adaptive(),
-                                    ),
-                                  )
-                                : Text(
-                                    "Tem certeza que deseja excluir este boleto?",
-                                    style: AppTextStyles.trailingRegular,
-                                  ),
-                            actions: Provider.of<BoletoListController>(context)
-                                    .isLoading
-                                ? []
-                                : [
-                                    LabelButton(
-                                      label: "Cancelar",
-                                      onPressed: Navigator.of(context).pop,
-                                    ),
-                                    LabelButton(
-                                      label: "Excluir",
-                                      style: AppTextStyles.buttonBoldPrimary,
-                                      onPressed: () async {
-                                        final result = await Provider.of<
-                                            BoletoListController>(
-                                          context,
-                                          listen: false,
-                                        ).deleteBoleto(boleto);
+              onTap: Provider.of<BoletoListController>(context).isLoading
+                  ? null
+                  : () {
+                      final provider = Provider.of<BoletoListController>(
+                        context,
+                        listen: false,
+                      );
 
-                                        if (result) {
-                                          Navigator.of(context).pop();
-                                          Navigator.of(context).pop();
-                                        } else {
-                                          toast.showToast(
-                                            child: DeleteErrorToast(),
-                                            gravity: ToastGravity.BOTTOM,
-                                            toastDuration:
-                                                const Duration(seconds: 2),
-                                          );
-                                          Navigator.of(context).pop();
-                                        }
-                                      },
-                                    ),
-                                  ],
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return ChangeNotifierProvider.value(
+                            value: provider,
+                            child: Builder(
+                              builder: (context) {
+                                return DeleteDialog(
+                                  boleto: boleto,
+                                  toast: toast,
+                                );
+                              },
+                            ),
                           );
                         },
-                      ),
-                    );
-                  },
-                );
-              },
+                      );
+                    },
               child: SizedBox(
                 height: 52.0,
                 width: double.infinity,

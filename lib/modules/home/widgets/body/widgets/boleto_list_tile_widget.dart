@@ -30,7 +30,7 @@ class BoletoListTileWidget extends StatelessWidget {
 
     return AnimatedCard(
       child: ListTile(
-        key: ValueKey<String>("${boleto.hashCode}"),
+        key: ValueKey<String>(boleto.id),
         contentPadding: EdgeInsets.zero,
         leading: IconButton(
           onPressed: () {

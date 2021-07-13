@@ -18,4 +18,9 @@ class BoletoListServices implements IBoletoListServices {
   Future<bool> deleteBoleto(Boleto boleto) async {
     return _firebaseBoletoListservices.deleteBoleto(boleto);
   }
+
+  @override
+  Future<bool> updateBoleto(Boleto boleto) async {
+    return _firebaseBoletoListservices.updateBoleto(boleto);
+  }
 }
