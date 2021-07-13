@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import '../../user/models/user.dart';
 import 'firebase_auth_services.dart';
 import 'firebase_firestore_services.dart';
+import 'firebase_messaging_services.dart';
 import 'google_services.dart';
 import 'i_auth_services.dart';
 
@@ -11,8 +12,14 @@ class AuthServices implements IAuthServices {
   final GoogleServices _googleServices;
   final FirebaseAuthServices _auth;
   final FirebaseFirestoreServices _firestoreServices;
+  final FirebaseMessaginServices _messaginServices;
 
-  AuthServices(this._googleServices, this._auth, this._firestoreServices);
+  AuthServices(
+    this._googleServices,
+    this._auth,
+    this._firestoreServices,
+    this._messaginServices,
+  );
 
   @override
   Future<User?> googleSignIn() async {
@@ -45,7 +52,18 @@ class AuthServices implements IAuthServices {
 
   @override
   Future<User?> saveUser(User user) async {
-    return _firestoreServices.saveUser(user);
+    final savedUser = await _firestoreServices.saveUser(user);
+
+    _messaginServices.getUserToken().then((token) {
+      if (token != null) {
+        _firestoreServices.saveToken(
+          userId: user.id,
+          token: token,
+        );
+      }
+    });
+
+    return savedUser;
   }
 
   @override
@@ -66,6 +84,15 @@ class AuthServices implements IAuthServices {
     if (currentUserId == null) {
       return null;
     }
+
+    _messaginServices.getUserToken().then((token) {
+      if (token != null) {
+        _firestoreServices.saveToken(
+          userId: currentUserId,
+          token: token,
+        );
+      }
+    });
 
     final user = await _firestoreServices.getUserMap(currentUserId);
 
