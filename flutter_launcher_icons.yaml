@@ -1,0 +1,6 @@
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logomini.png"
+  adaptive_icon_background: "#ffffff"
+  remove_alpha_ios: true
