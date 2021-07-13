@@ -31,4 +31,12 @@ class BoletoListController with ChangeNotifier {
     _setIsLoading(newState: false);
     return result;
   }
+
+  Future<bool> updateBoletoPaid(Boleto boleto, {required bool isPaid}) async {
+    _setIsLoading(newState: true);
+    final updatedBoleto = boleto.copyWith(paid: isPaid);
+    final result = await _services.updateBoleto(updatedBoleto);
+    _setIsLoading(newState: false);
+    return result;
+  }
 }

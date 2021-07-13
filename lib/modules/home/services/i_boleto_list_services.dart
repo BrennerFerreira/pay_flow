@@ -4,4 +4,6 @@ abstract class IBoletoListServices {
   Stream<List<Boleto>> getBoletos();
 
   Future<bool> deleteBoleto(Boleto boleto);
+
+  Future<bool> updateBoleto(Boleto boleto);
 }

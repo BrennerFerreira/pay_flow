@@ -14,10 +14,37 @@ class FirebaseFirestoreBoletoListservices {
 
   FirebaseFirestoreBoletoListservices(this._auth, this._firestore);
 
-  Stream<List<Boleto>> getBoletos() {
+  DocumentReference<Map<String, dynamic>> _getUserDoc() {
     final userId = _auth.currentUser!.uid;
 
     final userDoc = _firestore.collection(USERS_STRING).doc(userId);
+
+    return userDoc;
+  }
+
+  Future<List<Boleto>?> _getUserSavedBoletos() async {
+    try {
+      final userDoc = _getUserDoc();
+
+      final userDocData = await userDoc.get();
+
+      final userData = userDocData.data()!;
+
+      final oldBoletosListMap = List.castFrom<dynamic, Map<String, dynamic>>(
+          userData[BOLETOS_STRING] as List);
+
+      final boletosList = oldBoletosListMap.map((e) {
+        return Boleto.fromMap(e);
+      }).toList();
+
+      return boletosList;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Stream<List<Boleto>> getBoletos() {
+    final userDoc = _getUserDoc();
 
     final userDocSnapshot = userDoc.snapshots();
 
@@ -39,28 +66,59 @@ class FirebaseFirestoreBoletoListservices {
 
   Future<bool> deleteBoleto(Boleto boleto) async {
     try {
-      final userId = _auth.currentUser!.uid;
+      final userDoc = _getUserDoc();
 
-      final userDoc = _firestore.collection(USERS_STRING).doc(userId);
+      final boletosList = await _getUserSavedBoletos();
 
-      final userDocData = await userDoc.get();
-
-      final userData = userDocData.data()!;
-
-      final oldBoletosListMap = List.castFrom<dynamic, Map<String, dynamic>>(
-          userData[BOLETOS_STRING] as List);
-
-      final boletosList = oldBoletosListMap.map((e) {
-        return Boleto.fromMap(e);
-      }).toList();
+      if (boletosList == null) {
+        return false;
+      }
 
       boletosList.remove(boleto);
 
       final newBoletosListMap = boletosList.map((e) => e.toMap()).toList();
 
-      await userDoc.set({
-        BOLETOS_STRING: newBoletosListMap,
-      }, SetOptions(merge: true));
+      await userDoc.set(
+        {
+          BOLETOS_STRING: newBoletosListMap,
+        },
+        SetOptions(merge: true),
+      );
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> updateBoleto(Boleto boleto) async {
+    try {
+      final userDoc = _getUserDoc();
+
+      final boletosList = await _getUserSavedBoletos();
+
+      if (boletosList == null) {
+        return false;
+      }
+
+      bool idMatcher(element) => element.id == boleto.id;
+
+      final boletoToUpdateIndex = boletosList.indexWhere(idMatcher);
+
+      boletosList.replaceRange(
+        boletoToUpdateIndex,
+        boletoToUpdateIndex + 1,
+        [boleto],
+      );
+
+      final newBoletosListMap = boletosList.map((e) => e.toMap()).toList();
+
+      await userDoc.set(
+        {
+          BOLETOS_STRING: newBoletosListMap,
+        },
+        SetOptions(merge: true),
+      );
 
       return true;
     } catch (e) {
