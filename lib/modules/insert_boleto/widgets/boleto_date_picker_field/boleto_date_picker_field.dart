@@ -13,7 +13,8 @@ class BoletoDatePickerField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _fieldController = TextEditingController(
-        text: context.watch<InsertBoletoController>().boleto.dateFormatted);
+      text: context.watch<InsertBoletoController>().boleto.dueDateFormatted,
+    );
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: AnimatedCard(

@@ -15,13 +15,13 @@ class DescriptionBody extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 24),
             child: Text(
-              "Meu extrato",
+              "Boletos Pagos",
               style: AppTextStyles.titleBold,
             ),
           ),
           HorizontalDividerWidget(),
-          Expanded(
-            child: BoletoListWidget(),
+          const Expanded(
+            child: BoletoListWidget(showPaidBoletos: true),
           ),
         ],
       ),

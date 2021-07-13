@@ -25,7 +25,7 @@ class HomeBody extends StatelessWidget {
                 Consumer<BoletoListController>(
                   builder: (_, boletoList, __) {
                     return StreamBuilder<int>(
-                        stream: boletoList.boletosLength(),
+                        stream: boletoList.unpaidBoletosLength(),
                         initialData: 0,
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
@@ -45,7 +45,7 @@ class HomeBody extends StatelessWidget {
             ),
           ),
           HorizontalDividerWidget(),
-          Expanded(
+          const Expanded(
             child: BoletoListWidget(),
           ),
         ],

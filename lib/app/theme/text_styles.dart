@@ -34,16 +34,25 @@ class AppTextStyles {
     fontWeight: FontWeight.w600,
     color: AppColors.title,
   );
+  static final titleListTileError = GoogleFonts.lexendDeca(
+    fontSize: 17,
+    fontWeight: FontWeight.w600,
+    color: AppColors.delete,
+  );
   static final trailingRegular = GoogleFonts.lexendDeca(
     fontSize: 16,
     fontWeight: FontWeight.w400,
     color: AppColors.title,
   );
+  static final trailingRegularError = GoogleFonts.lexendDeca(
+      fontSize: 16, fontWeight: FontWeight.w400, color: AppColors.delete);
   static final trailingBold = GoogleFonts.lexendDeca(
     fontSize: 16,
     fontWeight: FontWeight.w600,
     color: AppColors.title,
   );
+  static final trailingBoldError = GoogleFonts.lexendDeca(
+      fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.delete);
   static final buttonPrimary = GoogleFonts.inter(
     fontSize: 15,
     fontWeight: FontWeight.w400,
@@ -83,6 +92,11 @@ class AppTextStyles {
     fontSize: 13,
     fontWeight: FontWeight.w400,
     color: AppColors.body,
+  );
+  static final captionBodyError = GoogleFonts.lexendDeca(
+    fontSize: 13,
+    fontWeight: FontWeight.w400,
+    color: AppColors.delete,
   );
   static final captionBoldOnPrimary = GoogleFonts.lexendDeca(
     fontSize: 13,

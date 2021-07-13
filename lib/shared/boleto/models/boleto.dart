@@ -12,6 +12,7 @@ class Boleto {
   final double price;
   final String barCode;
   final bool paid;
+  final DateTime? paidAt;
 
   Boleto._({
     required this.id,
@@ -20,6 +21,7 @@ class Boleto {
     required this.price,
     required this.barCode,
     required this.paid,
+    this.paidAt,
   });
 
   factory Boleto.empty() {
@@ -50,14 +52,18 @@ class Boleto {
 
   String get barCodeRaw => barCode.replaceAll(RegExp("[^0-9]"), "");
 
-  String get dateFormatted {
-    final int day = dueDate.day;
-    final int month = dueDate.month;
-    final int year = dueDate.year;
+  String formatDate(DateTime date) {
+    final int day = date.day;
+    final int month = date.month;
+    final int year = date.year;
     final String stringDay = day < 10 ? "0$day" : day.toString();
     final String stringMonth = month < 10 ? "0$month" : month.toString();
     return "$stringDay/$stringMonth/$year";
   }
+
+  bool get pastDueDate => !paid && dueDate.isBefore(DateTime.now());
+  String get dueDateFormatted => formatDate(dueDate);
+  String get paidAtDateFormatted => formatDate(paidAt!);
 
   String? convertBarCode(String barCode) {
     return ConvertBarCodeString.calculateRow(barCode);
@@ -70,15 +76,16 @@ class Boleto {
     double? price,
     String? barCode,
     bool? paid,
+    DateTime? paidAt,
   }) {
     return Boleto._(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      dueDate: dueDate ?? this.dueDate,
-      price: price ?? this.price,
-      barCode: barCode ?? this.barCode,
-      paid: paid ?? this.paid,
-    );
+        id: id ?? this.id,
+        name: name ?? this.name,
+        dueDate: dueDate ?? this.dueDate,
+        price: price ?? this.price,
+        barCode: barCode ?? this.barCode,
+        paid: paid ?? this.paid,
+        paidAt: paidAt ?? this.paidAt);
   }
 
   Map<String, dynamic> toMap() {
@@ -89,6 +96,7 @@ class Boleto {
       'price': price,
       'barCode': barCode,
       'paid': paid,
+      'paidAt': paidAt?.millisecondsSinceEpoch,
     };
   }
 
@@ -100,6 +108,9 @@ class Boleto {
       price: map['price'] as double,
       barCode: map['barCode'] as String,
       paid: map['paid'] as bool,
+      paidAt: map['paidAt'] == null
+          ? null
+          : DateTime.fromMillisecondsSinceEpoch(map['paidAt'] as int),
     );
   }
 
@@ -124,7 +135,8 @@ class Boleto {
         other.dueDate == dueDate &&
         other.price == price &&
         other.barCode == barCode &&
-        other.paid == paid;
+        other.paid == paid &&
+        other.paidAt == paidAt;
   }
 
   @override
@@ -134,6 +146,7 @@ class Boleto {
         dueDate.hashCode ^
         price.hashCode ^
         barCode.hashCode ^
-        paid.hashCode;
+        paid.hashCode ^
+        paidAt.hashCode;
   }
 }

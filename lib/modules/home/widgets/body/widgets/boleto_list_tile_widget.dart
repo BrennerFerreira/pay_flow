@@ -31,6 +31,7 @@ class BoletoListTileWidget extends StatelessWidget {
     return AnimatedCard(
       child: ListTile(
         key: ValueKey<String>(boleto.id),
+        isThreeLine: boleto.paid,
         contentPadding: EdgeInsets.zero,
         leading: IconButton(
           onPressed: () {
@@ -43,28 +44,43 @@ class BoletoListTileWidget extends StatelessWidget {
           },
           icon: Icon(
             Icons.copy,
-            color: AppColors.body,
+            color: boleto.pastDueDate ? AppColors.delete : AppColors.body,
           ),
         ),
         title: Text(
           boleto.name,
-          style: AppTextStyles.titleListTile,
+          style: boleto.pastDueDate
+              ? AppTextStyles.titleListTileError
+              : AppTextStyles.titleListTile,
         ),
         subtitle: Text(
-          "Vence em: ${boleto.dateFormatted}",
-          style: AppTextStyles.captionBody,
+          boleto.paid
+              ? "Vencimento: ${boleto.dueDateFormatted}\nPago em: ${boleto.paidAtDateFormatted}"
+              : "${boleto.pastDueDate ? "Venceu" : "Vence"} em: ${boleto.dueDateFormatted}",
+          style: boleto.pastDueDate
+              ? AppTextStyles.captionBodyError
+              : AppTextStyles.captionBody,
         ),
-        trailing: Text.rich(
-          TextSpan(
-            text: "R\$ ",
-            style: AppTextStyles.trailingRegular,
-            children: [
+        trailing: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text.rich(
               TextSpan(
-                text: moneyMask.text,
-                style: AppTextStyles.trailingBold,
+                text: "R\$ ",
+                style: boleto.pastDueDate
+                    ? AppTextStyles.trailingRegularError
+                    : AppTextStyles.trailingRegular,
+                children: [
+                  TextSpan(
+                    text: moneyMask.text,
+                    style: boleto.pastDueDate
+                        ? AppTextStyles.trailingBoldError
+                        : AppTextStyles.trailingBold,
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         onTap: () {
           final provider =

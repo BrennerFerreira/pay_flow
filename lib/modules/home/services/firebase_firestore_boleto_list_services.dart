@@ -57,6 +57,21 @@ class FirebaseFirestoreBoletoListservices {
 
         final boletosList = boletos.map((e) => Boleto.fromMap(e)).toList();
 
+        boletosList.sort((a, b) {
+          final int comparePastDuedate =
+              b.pastDueDate.toString().compareTo(a.pastDueDate.toString());
+
+          if (comparePastDuedate != 0) {
+            return comparePastDuedate;
+          }
+
+          if (a.pastDueDate) {
+            return b.dueDate.compareTo(a.dueDate);
+          }
+
+          return a.dueDate.compareTo(b.dueDate);
+        });
+
         return boletosList;
       },
     );
