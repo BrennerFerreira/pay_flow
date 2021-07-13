@@ -61,12 +61,14 @@ class _HomePageState extends State<HomePage> {
                         context.read<HomePageController>().logOut();
                       },
                     ),
-                    body: boletoList.isLoading
-                        ? const Center(
-                            child: CircularProgressIndicator.adaptive(),
-                          )
-                        : pages[Provider.of<HomePageController>(context)
-                            .currentPage],
+                    body: auth.userIsLoggedIn
+                        ? boletoList.isLoading
+                            ? const Center(
+                                child: CircularProgressIndicator.adaptive(),
+                              )
+                            : pages[Provider.of<HomePageController>(context)
+                                .currentPage]
+                        : Container(),
                     bottomNavigationBar: HomeBottomNavBar(),
                   );
           },
