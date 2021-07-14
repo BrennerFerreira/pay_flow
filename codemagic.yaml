@@ -37,15 +37,12 @@ workflows:
         # set up local properties
         echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
       - flutter packages pub get
-      - flutter build appbundle --profile --flavor dev -t lib/main_dev.dart
-      - find . -name "Podfile" -execdir pod install \;
-      - flutter build ios --profile --flavor dev -t lib/main_dev.dart --no-codesign
+      - flutter build appbundle --profile --flavor dev -t lib/main_dev.dart --obfuscate
+        --split-debug-info=build/app/outputs/symbols
     artifacts:
       - build/**/outputs/**/*.apk
       - build/**/outputs/**/*.aab
       - build/**/outputs/**/mapping.txt
-      - build/ios/ipa/*.ipa
-      - /tmp/xcodebuild_logs/*.log
       - flutter_drive.log
     publishing:
       email:
