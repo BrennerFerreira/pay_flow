@@ -61,7 +61,15 @@ class Boleto {
     return "$stringDay/$stringMonth/$year";
   }
 
-  bool get pastDueDate => !paid && dueDate.isBefore(DateTime.now());
+  bool get pastDueDate {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+
+    final boletoDueDate = DateTime(dueDate.year, dueDate.month, dueDate.day);
+
+    return !paid && boletoDueDate.isBefore(today);
+  }
+
   String get dueDateFormatted => formatDate(dueDate);
   String get paidAtDateFormatted => formatDate(paidAt!);
 
