@@ -20,9 +20,10 @@ class FirebaseFirestoreServices {
 
       if (!userData.exists) {
         await _firestore.collection(USERS_STRING).doc(user.id).set(
-              user.toMap(),
-              SetOptions(merge: true),
-            );
+          {
+            CREATED_AT_STRING: DateTime.now().millisecondsSinceEpoch,
+          },
+        );
       }
 
       return user;
@@ -38,7 +39,7 @@ class FirebaseFirestoreServices {
     try {
       final tokenData = {
         TOKEN_TITLE_STRING: token,
-        UPDATED_AT_STRING: DateTime.now().toIso8601String(),
+        UPDATED_AT_STRING: DateTime.now().millisecondsSinceEpoch,
         PLATFORM_STRING: Platform.operatingSystem,
       };
 
