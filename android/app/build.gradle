@@ -55,14 +55,21 @@ android {
     productFlavors {
         dev {
             dimension "flavor-type"
-            applicationId "com.brennerferreira.boleto_organizer.dev"
+            applicationIdSuffix ".dev"
+            versionCode 1
+            versionName "1.0"
+        }
+
+        preview {
+            dimension "flavor-type"
+            applicationIdSuffix ".preview"
             versionCode 1
             versionName "1.0"
         }
 
         prod {
             dimension "flavor-type"
-            applicationId "com.brennerferreira.boleto_organizer.prod"
+            applicationIdSuffix ".prod"
             versionCode 1
             versionName "1.0"
         }
