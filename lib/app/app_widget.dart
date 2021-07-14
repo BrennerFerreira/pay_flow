@@ -22,7 +22,7 @@ class AppWidget extends StatelessWidget {
         ),
       ],
       builder: (_, __) => MaterialApp(
-        title: 'Organizador de Boletos',
+        title: flavor == AppFlavor.PROD ? 'Pay Flow' : 'Pay Flow - Dev',
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
