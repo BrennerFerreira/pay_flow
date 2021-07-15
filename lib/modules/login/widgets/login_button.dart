@@ -13,7 +13,7 @@ class LoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 25.0),
+      padding: const EdgeInsets.only(top: 25.0, bottom: 12.5),
       child: InkWell(
         onTap: () async {
           await context.read<AuthController>().googleSignIn();
