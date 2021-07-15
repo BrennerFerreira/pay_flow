@@ -26,6 +26,18 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 apply plugin: 'com.google.gms.google-services'
 
+def prodKeystoreProperties = new Properties()
+   def prodKeystorePropertiesFile = rootProject.file('prod.key.properties')
+   if (prodKeystorePropertiesFile.exists()) {
+       prodKeystoreProperties.load(new FileInputStream(prodKeystorePropertiesFile))
+   }
+
+def previewKeystoreProperties = new Properties()
+   def previewKeystorePropertiesFile = rootProject.file('prod.key.properties')
+   if (previewKeystorePropertiesFile.exists()) {
+       previewKeystoreProperties.load(new FileInputStream(previewKeystorePropertiesFile))
+   }
+
 android {
     compileSdkVersion 30
 
@@ -34,7 +46,6 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.brennerferreira.boleto_organizer"
         minSdkVersion 21
         targetSdkVersion 30
@@ -42,15 +53,32 @@ android {
         versionName flutterVersionName
     }
 
+    signingConfigs {
+       release {
+           keyAlias prodKeystoreProperties['keyAlias']
+           keyPassword prodKeystoreProperties['keyPassword']
+           storeFile prodKeystoreProperties['storeFile'] ? file(prodKeystoreProperties['storeFile']) : null
+           storePassword prodKeystoreProperties['storePassword']
+       }
+
+       preview {
+           keyAlias previewKeystoreProperties['keyAlias']
+           keyPassword previewKeystoreProperties['keyPassword']
+           storeFile previewKeystoreProperties['storeFile'] ? file(previewKeystoreProperties['storeFile']) : null
+           storePassword previewKeystoreProperties['storePassword']
+       }
+   }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             aaptOptions {
                 ignoreAssetsPattern '!mlkit_pose:!mlkit_label_default_model:'
             }
-            signingConfig signingConfigs.debug
         }
 
         profile {
+            signingConfig signingConfigs.preview
             aaptOptions {
                 ignoreAssetsPattern '!mlkit_pose:!mlkit_label_default_model:'
             }
