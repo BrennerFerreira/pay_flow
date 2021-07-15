@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "245516204627-31jdtbr07sgcujkhr7mjc8itfpsb99dq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.brennerferreira.boleto_organizer.preview",
+            "certificate_hash": "e3d1d4eb422bbfb72681e504e8b53e5360c8beae"
+          }
+        },
+        {
+          "client_id": "245516204627-715klr1ncmi3h96ujmar1nodganmackt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.brennerferreira.boleto_organizer.preview",
+            "certificate_hash": "ee11b884aed97c600bfefe6765fb2beba85a0d33"
+          }
+        },
+        {
           "client_id": "245516204627-l672blpmb9atk4tdur5n6dbu15m612kk.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
