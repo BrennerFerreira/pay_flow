@@ -12,7 +12,7 @@
             ]
         },
         {
-            "name": "Dev",
+            "name": "Preview",
             "request": "launch",
             "type": "dart",
             "program": "lib/main_prev.dart",
@@ -27,7 +27,6 @@
             "request": "launch",
             "type": "dart",
             "args": [
-                "--release",
                 "--flavor",
                 "prod",
             ]
