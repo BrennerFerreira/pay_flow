@@ -116,15 +116,15 @@ android {
         preview {
             dimension "flavor-type"
             applicationIdSuffix ".preview"
-            versionCode 1
-            versionName "1.0"
+            versionCode flutterVersionCode.toInteger()
+            versionName flutterVersionName
         }
 
         prod {
             dimension "flavor-type"
             applicationIdSuffix ".prod"
-            versionCode 1
-            versionName "1.0"
+            versionCode flutterVersionCode.toInteger()
+            versionName flutterVersionName
         }
     }
 }
