@@ -1,9 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:boleto_organizer/shared/user/models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:injectable/injectable.dart';
 
 @injectable
 class FirebaseAuthServices {
-  final FirebaseAuth _auth;
+  final auth.FirebaseAuth _auth;
 
   FirebaseAuthServices(this._auth);
 
@@ -12,7 +13,7 @@ class FirebaseAuthServices {
     required String? idToken,
   }) async {
     try {
-      final credential = GoogleAuthProvider.credential(
+      final credential = auth.GoogleAuthProvider.credential(
         accessToken: accessToken,
         idToken: idToken,
       );
@@ -29,9 +30,20 @@ class FirebaseAuthServices {
     await _auth.signOut();
   }
 
-  String? currentUser() {
+  User? currentUser() {
     final currentUser = _auth.currentUser;
 
-    return currentUser?.uid;
+    if (currentUser == null) {
+      return null;
+    }
+
+    final User user = User(
+      displayName: currentUser.displayName ?? "Usuário",
+      email: currentUser.email ?? "",
+      id: currentUser.uid,
+      photoUrl: currentUser.photoURL,
+    );
+
+    return user;
   }
 }

@@ -7,5 +7,5 @@ abstract class IAuthServices {
 
   Future<bool> logOut();
 
-  Future<User?> getCurrentUser();
+  User? getCurrentUser();
 }
