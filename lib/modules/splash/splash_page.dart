@@ -1,13 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:provider/provider.dart';
 
+import '../../app/routes/routes_names.dart';
 import '../../app/theme/images.dart';
-import 'controller/splash_controller.dart';
+import '../../shared/auth/controller/auth_controller.dart';
 
-class SplashPage extends StatelessWidget {
-  final _controller = SplashController();
+class SplashPage extends StatefulWidget {
+  @override
+  _SplashPageState createState() => _SplashPageState();
+}
+
+class _SplashPageState extends State<SplashPage> {
+  @override
+  void initState() {
+    super.initState();
+
+    SchedulerBinding.instance?.addPostFrameCallback((_) {
+      final currentUser = context.read<AuthController>().getCurrentUser();
+
+      if (currentUser != null) {
+        Navigator.of(context).pushReplacementNamed(HOME_ROUTE);
+      } else {
+        Navigator.of(context).pushReplacementNamed(LOGIN_ROUTE);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    _controller.checkLoggedUser(context);
     return Scaffold(
       body: SizedBox(
         height: double.infinity,

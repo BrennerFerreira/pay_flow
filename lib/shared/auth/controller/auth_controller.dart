@@ -53,8 +53,8 @@ class AuthController with ChangeNotifier {
     _setLoading(newState: false);
   }
 
-  Future<User?> getCurrentUser() async {
-    final loggedInUser = await _services.getCurrentUser();
+  User? getCurrentUser() {
+    final loggedInUser = _services.getCurrentUser();
     _setUserLoggedIn(loggedInUser);
     return loggedInUser;
   }

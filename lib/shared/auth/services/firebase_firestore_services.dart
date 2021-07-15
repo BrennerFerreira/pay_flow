@@ -92,19 +92,4 @@ class FirebaseFirestoreServices {
       return;
     }
   }
-
-  Future<User?> getUserMap(String userId) async {
-    try {
-      final loggedInUserDoc =
-          await _firestore.collection(USERS_STRING).doc(userId).get();
-
-      final loggedInUserMap = loggedInUserDoc.data()!;
-
-      final user = User.fromMap(loggedInUserMap);
-
-      return user;
-    } catch (e) {
-      return null;
-    }
-  }
 }
