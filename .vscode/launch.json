@@ -12,6 +12,17 @@
             ]
         },
         {
+            "name": "Preview",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_prev.dart",
+            "args": [
+                "--profile",
+                "--flavor",
+                "preview",
+            ]
+        },
+        {
             "name": "Prod",
             "request": "launch",
             "type": "dart",
