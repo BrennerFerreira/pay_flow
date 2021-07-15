@@ -78,24 +78,20 @@ class AuthServices implements IAuthServices {
   }
 
   @override
-  Future<User?> getCurrentUser() async {
-    final currentUserId = _auth.currentUser();
+  User? getCurrentUser() {
+    final currentUser = _auth.currentUser();
 
-    if (currentUserId == null) {
-      return null;
+    if (currentUser != null) {
+      _messaginServices.getUserToken().then((token) {
+        if (token != null) {
+          _firestoreServices.saveToken(
+            userId: currentUser.id,
+            token: token,
+          );
+        }
+      });
     }
 
-    _messaginServices.getUserToken().then((token) {
-      if (token != null) {
-        _firestoreServices.saveToken(
-          userId: currentUserId,
-          token: token,
-        );
-      }
-    });
-
-    final user = await _firestoreServices.getUserMap(currentUserId);
-
-    return user;
+    return currentUser;
   }
 }
