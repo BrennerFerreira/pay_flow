@@ -1,3 +1,4 @@
+import 'package:boleto_organizer/modules/privacy_policy/privacy_policy_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +15,7 @@ import 'routes_names.dart';
 final Map<String, Widget Function(BuildContext)> routes = {
   SPLASH_ROUTE: (_) => SplashPage(),
   LOGIN_ROUTE: (_) => LoginPage(),
+  PRIVACY_POLICY_ROUTE: (_) => PrivacyPolicyPage(),
   HOME_ROUTE: (_) => HomePage(),
   BAR_CODE_SCANNER_ROUTE: (context) =>
       ChangeNotifierProvider<BarCodeScannerController>(

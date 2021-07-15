@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../app/routes/routes_names.dart';
 import '../../app/theme/colors.dart';
 import '../../app/theme/images.dart';
+import '../../app/theme/text_styles.dart';
 import '../../shared/auth/controller/auth_controller.dart';
 import '../../shared/loading_page/loading_page.dart';
 import 'widgets/login_button.dart';
@@ -66,6 +67,23 @@ class _LoginPageState extends State<LoginPage> {
                             Image.asset(AppImages.logomini),
                             LoginTitle(),
                             LoginButton(),
+                            Text(
+                              "Ao criar a sua conta, você concorda com a nossa",
+                              style: AppTextStyles.captionBody,
+                              textAlign: TextAlign.center,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).pushNamed(
+                                  PRIVACY_POLICY_ROUTE,
+                                );
+                              },
+                              child: Text(
+                                "Política de Privacidade",
+                                style: AppTextStyles.captionBoldBody,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
                           ],
                         ),
                       )
