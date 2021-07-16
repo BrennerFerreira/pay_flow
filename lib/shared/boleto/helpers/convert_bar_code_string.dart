@@ -12,7 +12,6 @@ class ConvertBarCodeString {
     final String row = barCode.replaceAll(_regExp, "");
 
     if (row.length != 44) {
-      print("==========ERRO: ROW LENGTH ${row.length}");
       return _ResponseType(
         error:
             "Não foi possível encontrar o valor correto do código de barras.",
@@ -28,8 +27,6 @@ class ConvertBarCodeString {
 
     if (_module11Bank("${row.substring(0, 4)}${row.substring(5, 44)}") !=
         int.parse(field4)) {
-      print(
-          "==========ERROR: MODULE11 ${row.substring(0, 4)}${row.substring(5, 44)} FIELD4 $field4");
       //'Digito verificador '+campo4+', o correto é
       //'+modulo11_banco(  linha.substr(0,4)+linha.substr(5,99)  )+
       //'O sistema não altera automaticamente o dígito correto na quinta casa!'
@@ -37,10 +34,6 @@ class ConvertBarCodeString {
         error: "Erro ao converter o código para a linha digitável.",
       );
     }
-
-    print(
-        "==========FINAL RESULT: $field1${_module10(field1)} $field2${_module10(field2)} "
-        "$field3${_module10(field3)} $field4 $field5");
 
     return _ResponseType(
       barCode: "$field1${_module10(field1)} $field2${_module10(field2)} "
