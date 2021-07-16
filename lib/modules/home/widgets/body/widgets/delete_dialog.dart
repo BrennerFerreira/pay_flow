@@ -6,8 +6,8 @@ import '../../../../../app/theme/colors.dart';
 import '../../../../../app/theme/text_styles.dart';
 import '../../../../../shared/boleto/models/boleto.dart';
 import '../../../../../shared/widgets/label_button/label_button.dart';
+import '../../../../../shared/widgets/toast/toast.dart';
 import '../../../controllers/boleto_list_controller.dart';
-import 'delete_error_toast.dart';
 
 class DeleteDialog extends StatelessWidget {
   final Boleto boleto;
@@ -59,7 +59,12 @@ class DeleteDialog extends StatelessWidget {
                     Navigator.of(context).pop();
                   } else {
                     toast.showToast(
-                      child: DeleteErrorToast(),
+                      child: const CustomToast(
+                        color: AppColors.delete,
+                        icon: Icons.error,
+                        label:
+                            "Erro ao excluir o boleto. Por favor, tente novamente.",
+                      ),
                       gravity: ToastGravity.BOTTOM,
                       toastDuration: const Duration(seconds: 2),
                     );
