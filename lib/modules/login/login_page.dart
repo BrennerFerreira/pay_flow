@@ -1,3 +1,4 @@
+import 'package:boleto_organizer/shared/widgets/toast/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
