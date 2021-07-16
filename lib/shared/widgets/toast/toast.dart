@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
 
-import '../../../../app/theme/colors.dart';
+class CustomToast extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final Color color;
 
-class ErrorToast extends StatelessWidget {
+  const CustomToast({
+    Key? key,
+    required this.icon,
+    required this.label,
+    required this.color,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -10,16 +19,16 @@ class ErrorToast extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25.0),
-        color: AppColors.delete,
+        color: color,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: const [
-          Icon(Icons.error),
-          SizedBox(width: 12.0),
+        children: [
+          Icon(icon),
+          const SizedBox(width: 12.0),
           Expanded(
             child: Text(
-              "Erro ao salvar o boleto. Por favor, tente novamente.",
+              label,
               softWrap: true,
             ),
           )
