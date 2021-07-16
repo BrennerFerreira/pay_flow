@@ -1,7 +1,7 @@
-import 'package:boleto_organizer/shared/boleto/models/boleto.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../shared/boleto/models/boleto.dart';
 import '../../../controllers/boleto_list_controller.dart';
 import 'boleto_list_tile_widget.dart';
 
