@@ -29,28 +29,34 @@ class AuthController with ChangeNotifier {
 
   Future<void> googleSignIn() async {
     _setLoading(newState: true);
+    User? savedUser;
     final User? user = await _services.googleSignIn();
 
     if (user != null) {
-      await saveUser(user);
+      savedUser = await _services.saveUser(user);
+
+      if (savedUser == null) {
+        await logOut();
+      }
     }
 
-    _setLoading(newState: false);
-  }
-
-  Future<void> saveUser(User user) async {
-    final savedUser = await _services.saveUser(user);
     _user = savedUser;
+
+    _setLoading(newState: false);
     notifyListeners();
   }
 
-  Future<void> logOut() async {
+  Future<bool> logOut() async {
     _setLoading(newState: true);
     final result = await _services.logOut();
+
     if (result) {
       _setUserLoggedIn(null);
     }
+
     _setLoading(newState: false);
+
+    return result;
   }
 
   User? getCurrentUser() {
