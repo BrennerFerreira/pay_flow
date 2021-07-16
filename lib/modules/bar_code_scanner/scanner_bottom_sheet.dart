@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:boleto_organizer/app/routes/routes_names.dart';
-import 'package:boleto_organizer/app/theme/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+import '../../app/routes/routes_names.dart';
 import '../../app/theme/colors.dart';
+import '../../app/theme/text_styles.dart';
 import 'controller/bar_code_scanner_controller.dart';
 import 'widgets/line_label_button.dart';
 

@@ -1,6 +1,7 @@
-import 'package:boleto_organizer/shared/user/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:injectable/injectable.dart';
+
+import '../../user/models/user.dart';
 
 @injectable
 class FirebaseAuthServices {
