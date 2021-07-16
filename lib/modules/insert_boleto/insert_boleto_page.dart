@@ -8,9 +8,9 @@ import '../../app/routes/routes_names.dart';
 import '../../app/theme/colors.dart';
 import '../../app/theme/text_styles.dart';
 import '../../shared/widgets/label_buttons_set/label_buttons_set.dart';
+import '../../shared/widgets/toast/toast.dart';
 import 'controller/insert_boleto_controller.dart';
 import 'widgets/boleto_date_picker_field/boleto_date_picker_field.dart';
-import 'widgets/error_toast/error_toast.dart';
 import 'widgets/input_text/input_text_widget.dart';
 
 class InsertBoletoPage extends StatefulWidget {
@@ -151,7 +151,12 @@ class _InsertBoletoPageState extends State<InsertBoletoPage> {
 
                   if (newBoleto == null) {
                     fToast.showToast(
-                      child: ErrorToast(),
+                      child: const CustomToast(
+                        color: AppColors.delete,
+                        icon: Icons.error,
+                        label:
+                            "Erro ao salvar o boleto. Por favor, tente novamente.",
+                      ),
                       gravity: ToastGravity.BOTTOM,
                       toastDuration: const Duration(seconds: 2),
                     );

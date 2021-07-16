@@ -8,9 +8,9 @@ import 'package:provider/provider.dart';
 import '../../../../../../app/theme/text_styles.dart';
 import '../../../../../../shared/boleto/models/boleto.dart';
 import '../../../../../app/theme/colors.dart';
+import '../../../../../shared/widgets/toast/toast.dart';
 import '../../../controllers/boleto_list_controller.dart';
 import 'boleto_bottom_sheet.dart';
-import 'copy_success_toast.dart';
 
 class BoletoListTileWidget extends StatelessWidget {
   final Boleto boleto;
@@ -37,7 +37,11 @@ class BoletoListTileWidget extends StatelessWidget {
           onPressed: () {
             Clipboard.setData(ClipboardData(text: boleto.barCode));
             fToast.showToast(
-              child: CopySuccessToast(),
+              child: const CustomToast(
+                color: AppColors.green,
+                icon: Icons.check,
+                label: "Código de barras copiado para a área de transferência.",
+              ),
               gravity: ToastGravity.BOTTOM,
               toastDuration: const Duration(seconds: 2),
             );
