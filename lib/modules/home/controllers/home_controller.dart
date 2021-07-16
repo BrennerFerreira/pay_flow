@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../injectable.dart';
 import '../../../shared/auth/controller/auth_controller.dart';
 
 @injectable
 class HomePageController with ChangeNotifier {
-  final _authController = getIt<AuthController>();
+  final AuthController _authController;
 
   int _currentPage = 0;
+
+  HomePageController(this._authController);
 
   int get currentPage => _currentPage;
 
@@ -21,7 +22,7 @@ class HomePageController with ChangeNotifier {
 
   void onDescriptionPressed() => _onPageChanged(1);
 
-  Future<void> logOut() async {
-    await _authController.logOut();
+  Future<bool> logOut() async {
+    return _authController.logOut();
   }
 }

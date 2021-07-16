@@ -7,7 +7,7 @@ import '../../../shared/user/models/user.dart';
 class HomeAppBar {
   static PreferredSize appBar({
     required VoidCallback onLogOut,
-    required User user,
+    required User? user,
   }) =>
       PreferredSize(
         preferredSize: const Size.fromHeight(152),
@@ -36,7 +36,7 @@ class HomeAppBar {
                       style: AppTextStyles.titleOnPrimary,
                       children: [
                         TextSpan(
-                          text: user.displayName,
+                          text: user?.displayName ?? "Usuário",
                           style: AppTextStyles.titleBoldOnPrimary,
                         ),
                       ],
@@ -52,10 +52,10 @@ class HomeAppBar {
                     decoration: BoxDecoration(
                       color: Colors.black,
                       borderRadius: BorderRadius.circular(10),
-                      image: user.photoUrl != null
+                      image: user?.photoUrl != null
                           ? DecorationImage(
                               image: NetworkImage(
-                              user.photoUrl!,
+                              user!.photoUrl!,
                             ))
                           : null,
                     ),
