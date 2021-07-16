@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
                             : pages[Provider.of<HomePageController>(context)
                                 .currentPage]
                         : Container(),
-                    bottomNavigationBar: HomeBottomNavBar(),
+                    bottomNavigationBar: const HomeBottomNavBar(),
                   );
           },
         );
