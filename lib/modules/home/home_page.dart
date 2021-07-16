@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/routes/routes_names.dart';
+import '../../app/theme/colors.dart';
 import '../../injectable.dart';
 import '../../shared/auth/controller/auth_controller.dart';
 import '../../shared/loading_page/loading_page.dart';
-import '../../shared/user/models/user.dart';
+import '../../shared/widgets/toast/toast.dart';
 import 'controllers/boleto_list_controller.dart';
 import 'controllers/home_controller.dart';
 import 'widgets/body/description_body/description_body.dart';
@@ -19,19 +21,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  void returnToLoginIfNoUser() {
-    if (context.read<AuthController>().user == null) {
-      Navigator.pushReplacementNamed(context, LOGIN_ROUTE);
-    }
-  }
+  late FToast fToast;
 
   @override
   void initState() {
     super.initState();
-    context.read<AuthController>().addListener(returnToLoginIfNoUser);
+    fToast = FToast();
+    fToast.init(context);
   }
-
-  final User user = getIt<AuthController>().user!;
 
   final pages = [
     HomeBody(),
@@ -56,9 +53,29 @@ class _HomePageState extends State<HomePage> {
                 ? LoadingPage()
                 : Scaffold(
                     appBar: HomeAppBar.appBar(
-                      user: user,
-                      onLogOut: () {
-                        context.read<HomePageController>().logOut();
+                      user: Provider.of<AuthController>(
+                        context,
+                        listen: true,
+                      ).user,
+                      onLogOut: () async {
+                        final result =
+                            await context.read<HomePageController>().logOut();
+
+                        if (result) {
+                          Navigator.of(context)
+                              .pushReplacementNamed(LOGIN_ROUTE);
+                        } else {
+                          fToast.showToast(
+                            child: const CustomToast(
+                              color: AppColors.delete,
+                              icon: Icons.error,
+                              label:
+                                  "Erro ao terminar a sessão. Por favor, tente novamente.",
+                            ),
+                            gravity: ToastGravity.BOTTOM,
+                            toastDuration: const Duration(seconds: 2),
+                          );
+                        }
                       },
                     ),
                     body: auth.userIsLoggedIn
@@ -75,11 +92,5 @@ class _HomePageState extends State<HomePage> {
         );
       },
     );
-  }
-
-  @override
-  void dispose() {
-    context.read<AuthController>().removeListener(returnToLoginIfNoUser);
-    super.dispose();
   }
 }
