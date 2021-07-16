@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:uuid/uuid.dart';
 
-import '../helpers/convert_bar_code_string.dart';
 import '../helpers/get_due_date_and_value_from_bar_code.dart';
 
 class Boleto {
