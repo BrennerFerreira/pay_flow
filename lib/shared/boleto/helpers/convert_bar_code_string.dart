@@ -27,8 +27,6 @@ class ConvertBarCodeString {
 
     if (_module11Bank("${row.substring(0, 4)}${row.substring(5, 44)}") !=
         int.parse(field4)) {
-      print(
-          "==========ERROR: MODULE11 ${row.substring(0, 4)}${row.substring(5, 44)} FIELD4 $field4");
       //'Digito verificador '+campo4+', o correto é
       //'+modulo11_banco(  linha.substr(0,4)+linha.substr(5,99)  )+
       //'O sistema não altera automaticamente o dígito correto na quinta casa!'
