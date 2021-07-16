@@ -36,9 +36,4 @@ class User {
   factory User.fromJson(String source) => User.fromMap(
         json.decode(source) as Map<String, dynamic>,
       );
-
-  @override
-  String toString() {
-    return 'User(displayName: $displayName, email: $email, id: $id, photoUrl: $photoUrl)';
-  }
 }
