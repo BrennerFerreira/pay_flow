@@ -1,8 +1,8 @@
-import 'package:boleto_organizer/modules/bar_code_scanner/scanner_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../app/theme/colors.dart';
+import '../../bar_code_scanner/scanner_bottom_sheet.dart';
 import '../controllers/home_controller.dart';
 
 class HomeBottomNavBar extends StatelessWidget {
