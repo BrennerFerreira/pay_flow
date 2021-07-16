@@ -73,10 +73,6 @@ class Boleto {
   String get dueDateFormatted => formatDate(dueDate);
   String get paidAtDateFormatted => formatDate(paidAt!);
 
-  String? convertBarCode(String barCode) {
-    return ConvertBarCodeString.calculateRow(barCode);
-  }
-
   Boleto copyWith({
     String? id,
     String? name,
