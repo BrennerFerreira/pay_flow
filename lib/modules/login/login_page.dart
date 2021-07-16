@@ -1,4 +1,3 @@
-import 'package:boleto_organizer/shared/widgets/toast/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +8,7 @@ import '../../app/theme/images.dart';
 import '../../app/theme/text_styles.dart';
 import '../../shared/auth/controller/auth_controller.dart';
 import '../../shared/loading_page/loading_page.dart';
+import '../../shared/widgets/toast/toast.dart';
 import 'widgets/login_button.dart';
 import 'widgets/person_image.dart';
 import 'widgets/title.dart';
