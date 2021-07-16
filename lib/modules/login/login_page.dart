@@ -1,4 +1,6 @@
+import 'package:boleto_organizer/shared/widgets/toast/toast.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/routes/routes_names.dart';
@@ -17,16 +19,13 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  void navigatorListener() {
-    if (context.read<AuthController>().user != null) {
-      Navigator.pushReplacementNamed(context, HOME_ROUTE);
-    }
-  }
+  late FToast fToast;
 
   @override
   void initState() {
     super.initState();
-    context.read<AuthController>().addListener(navigatorListener);
+    fToast = FToast();
+    fToast.init(context);
   }
 
   @override
@@ -66,7 +65,24 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             Image.asset(AppImages.logomini),
                             LoginTitle(),
-                            LoginButton(),
+                            LoginButton(
+                              onLoginSuccess: () {
+                                Navigator.of(context)
+                                    .pushReplacementNamed(HOME_ROUTE);
+                              },
+                              onLoginFail: () {
+                                fToast.showToast(
+                                  child: const CustomToast(
+                                    icon: Icons.error,
+                                    label:
+                                        "Erro ao iniciar a sessão. Por favor, tente novamente.",
+                                    color: AppColors.delete,
+                                  ),
+                                  gravity: ToastGravity.BOTTOM,
+                                  toastDuration: const Duration(seconds: 2),
+                                );
+                              },
+                            ),
                             Text(
                               "Ao criar a sua conta, você concorda com a nossa",
                               style: AppTextStyles.captionBody,
@@ -93,11 +109,5 @@ class _LoginPageState extends State<LoginPage> {
               );
       },
     );
-  }
-
-  @override
-  void dispose() {
-    context.read<AuthController>().removeListener(navigatorListener);
-    super.dispose();
   }
 }
