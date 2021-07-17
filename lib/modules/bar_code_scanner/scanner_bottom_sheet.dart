@@ -19,7 +19,9 @@ class ScannerBottomSheet extends StatelessWidget {
       create: (_) => BarCodeScannerController(),
       builder: (context, _) => Consumer<BarCodeScannerController>(
         builder: (_, controller, __) => BottomSheet(
-          onClosing: controller.isLoading ? () {} : Navigator.of(context).pop,
+          onClosing: controller.isLoading
+              ? controller.dispose
+              : Navigator.of(context).pop,
           builder: (_) {
             return Material(
               color: AppColors.background,
