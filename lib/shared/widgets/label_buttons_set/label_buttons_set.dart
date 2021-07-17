@@ -41,8 +41,11 @@ class LabelButtonsSet extends StatelessWidget {
                   child: LabelButton(
                     label: primaryLabel,
                     onPressed: primaryOnPressed,
-                    style:
-                        enablePrimaryColor ? AppTextStyles.buttonPrimary : null,
+                    style: primaryOnPressed == null
+                        ? AppTextStyles.buttonDisabled
+                        : enablePrimaryColor
+                            ? AppTextStyles.buttonPrimary
+                            : null,
                   ),
                 ),
                 SizedBox(height: 51, child: VerticalDividerWidget()),
@@ -50,9 +53,11 @@ class LabelButtonsSet extends StatelessWidget {
                   child: LabelButton(
                     label: secondaryLabel,
                     onPressed: secondaryOnPressed,
-                    style: enableSecondaryColor
-                        ? AppTextStyles.buttonPrimary
-                        : null,
+                    style: secondaryOnPressed == null
+                        ? AppTextStyles.buttonDisabled
+                        : enableSecondaryColor
+                            ? AppTextStyles.buttonPrimary
+                            : null,
                   ),
                 ),
               ],

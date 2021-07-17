@@ -9,6 +9,7 @@ class AppTheme {
     primarySwatch: AppColors.primaryColor,
     appBarTheme: const AppBarTheme(centerTitle: true),
     errorColor: AppColors.delete,
+    disabledColor: AppColors.stroke,
     brightness: Brightness.light,
   );
 
