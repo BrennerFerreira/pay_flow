@@ -8,6 +8,8 @@ import 'package:injectable/injectable.dart';
 class FirebaseAnalyticsServices implements IAnalyticsServices {
   final FirebaseAnalyticsObserver _observer;
 
+  FirebaseAnalytics get _analytics => _observer.analytics;
+
   FirebaseAnalyticsServices(this._observer);
   @override
   NavigatorObserver getObserver() {
@@ -16,18 +18,23 @@ class FirebaseAnalyticsServices implements IAnalyticsServices {
 
   @override
   void sendCurrentTabToAnalytics(String tab) {
-    _observer.analytics.setCurrentScreen(
+    _analytics.setCurrentScreen(
       screenName: 'home/$tab',
     );
   }
 
   @override
   void newPageAccessed(String screenName) {
-    _observer.analytics.setCurrentScreen(screenName: screenName);
+    _analytics.setCurrentScreen(screenName: screenName);
   }
 
   @override
   void setUserId(String userId) {
-    _observer.analytics.setUserId(userId);
+    _analytics.setUserId(userId);
+  }
+
+  @override
+  void userLoggedIn(String method) {
+    _analytics.logLogin(loginMethod: method);
   }
 }
