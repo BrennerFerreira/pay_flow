@@ -15,4 +15,6 @@ abstract class IAnalyticsServices {
   void boletoSaveSuccess();
   void boletoSaveError();
   void boletoSaveCancel();
+  void markBoletoAsPaid();
+  void boletoDeleted();
 }

@@ -88,4 +88,14 @@ class FirebaseAnalyticsServices implements IAnalyticsServices {
   void boletoSaveCancel() {
     _analytics.logEvent(name: "boleto-save-cancel");
   }
+
+  @override
+  void markBoletoAsPaid() {
+    _analytics.logEvent(name: "boleto-paid");
+  }
+
+  @override
+  void boletoDeleted() {
+    _analytics.logEvent(name: "boleto-deleted");
+  }
 }

@@ -64,4 +64,12 @@ class AnalyticsController {
   void boletoSaveCancel() {
     return _analyticsServices.boletoSaveCancel();
   }
+
+  void markBoletoAsPaid() {
+    return _analyticsServices.markBoletoAsPaid();
+  }
+
+  void boletoDeleted() {
+    return _analyticsServices.boletoDeleted();
+  }
 }
