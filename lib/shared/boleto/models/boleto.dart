@@ -12,6 +12,7 @@ class Boleto {
   final String barCode;
   final bool paid;
   final DateTime? paidAt;
+  final DateTime createdAt;
 
   Boleto._({
     required this.id,
@@ -20,6 +21,7 @@ class Boleto {
     required this.price,
     required this.barCode,
     required this.paid,
+    required this.createdAt,
     this.paidAt,
   });
 
@@ -31,6 +33,7 @@ class Boleto {
       price: 0.00,
       barCode: "",
       paid: false,
+      createdAt: DateTime.now(),
     );
   }
 
@@ -46,6 +49,7 @@ class Boleto {
       price: value ?? 0.00,
       name: "",
       paid: false,
+      createdAt: DateTime.now(),
     );
   }
 
@@ -82,13 +86,15 @@ class Boleto {
     DateTime? paidAt,
   }) {
     return Boleto._(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        dueDate: dueDate ?? this.dueDate,
-        price: price ?? this.price,
-        barCode: barCode ?? this.barCode,
-        paid: paid ?? this.paid,
-        paidAt: paidAt ?? this.paidAt);
+      id: id ?? this.id,
+      name: name ?? this.name,
+      dueDate: dueDate ?? this.dueDate,
+      price: price ?? this.price,
+      barCode: barCode ?? this.barCode,
+      paid: paid ?? this.paid,
+      paidAt: paidAt ?? this.paidAt,
+      createdAt: DateTime.now(),
+    );
   }
 
   Map<String, dynamic> toMap() {
@@ -100,6 +106,7 @@ class Boleto {
       'barCode': barCode,
       'paid': paid,
       'paidAt': paidAt?.millisecondsSinceEpoch,
+      'createdAt': createdAt.millisecondsSinceEpoch,
     };
   }
 
@@ -111,6 +118,7 @@ class Boleto {
       price: map['price'] as double,
       barCode: map['barCode'] as String,
       paid: map['paid'] as bool,
+      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
       paidAt: map['paidAt'] == null
           ? null
           : DateTime.fromMillisecondsSinceEpoch(map['paidAt'] as int),
@@ -125,7 +133,7 @@ class Boleto {
 
   @override
   String toString() {
-    return 'Boleto(id: $id, name: $name, dueDate: $dueDate, price: $price, barCode: $barCode, paid: $paid)';
+    return 'Boleto(id: $id, name: $name, dueDate: $dueDate, price: $price, barCode: $barCode, paid: $paid, createdAt: $createdAt)';
   }
 
   @override
@@ -139,6 +147,7 @@ class Boleto {
         other.price == price &&
         other.barCode == barCode &&
         other.paid == paid &&
+        other.createdAt == createdAt &&
         other.paidAt == paidAt;
   }
 
@@ -150,6 +159,7 @@ class Boleto {
         price.hashCode ^
         barCode.hashCode ^
         paid.hashCode ^
+        createdAt.hashCode ^
         paidAt.hashCode;
   }
 }
