@@ -27,4 +27,8 @@ class AnalyticsController {
   void userLoggedIn(String method) {
     return _analyticsServices.userLoggedIn(method);
   }
+
+  void addBoletoPressed() {
+    return _analyticsServices.addBoletoPressed();
+  }
 }
