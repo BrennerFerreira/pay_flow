@@ -46,7 +46,10 @@ class BarCodeScannerController with ChangeNotifier {
   Future<String?> _scannerBarCode(InputImage inputImage) async {
     _timer = Timer(const Duration(seconds: 20), () {
       if (!status.hasBarCode) {
-        _setMessage("O tempo para leitura do boleto foi excedido.");
+        _setIsLoading(newState: false);
+        _setMessage(
+          "Não foi possível encontrar um código de barras na imagem.",
+        );
       }
     });
     try {
