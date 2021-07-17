@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../app/theme/colors.dart';
 import '../../../../../app/theme/text_styles.dart';
+import '../../../../../shared/analytics/controller/analytics_controller.dart';
 import '../../../../../shared/boleto/models/boleto.dart';
 import '../../../../../shared/widgets/label_button/label_button.dart';
 import '../../../../../shared/widgets/toast/toast.dart';
@@ -55,6 +56,11 @@ class DeleteDialog extends StatelessWidget {
                   ).deleteBoleto(boleto);
 
                   if (result) {
+                    Provider.of<AnalyticsController>(
+                      context,
+                      listen: false,
+                    ).boletoDeleted();
+
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
                   } else {
@@ -68,7 +74,6 @@ class DeleteDialog extends StatelessWidget {
                       gravity: ToastGravity.BOTTOM,
                       toastDuration: const Duration(seconds: 2),
                     );
-                    Navigator.of(context).pop();
                   }
                 },
               ),
