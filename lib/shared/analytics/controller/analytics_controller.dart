@@ -33,6 +33,10 @@ class AnalyticsController {
     return _analyticsServices.userLoggedIn(method);
   }
 
+  void userLoggedOut() {
+    return _analyticsServices.userLoggedOut();
+  }
+
   void addBoletoPressed() {
     return _analyticsServices.addBoletoPressed();
   }

@@ -46,6 +46,11 @@ class FirebaseAnalyticsServices implements IAnalyticsServices {
   }
 
   @override
+  void userLoggedOut() {
+    _analytics.logEvent(name: 'user-log-out');
+  }
+
+  @override
   void addBoletoPressed() {
     _analytics.logEvent(name: "add-boleto-pressed");
   }
