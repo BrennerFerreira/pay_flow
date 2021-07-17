@@ -5,7 +5,7 @@ import '../../../shared/widgets/label_button/label_button.dart';
 
 class LineLabelButton extends StatelessWidget {
   final String label;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   const LineLabelButton({
     Key? key,
@@ -21,7 +21,9 @@ class LineLabelButton extends StatelessWidget {
       child: LabelButton(
         label: label,
         onPressed: onPressed,
-        style: AppTextStyles.buttonBoldPrimary,
+        style: onPressed == null
+            ? AppTextStyles.buttonBoldDisabled
+            : AppTextStyles.buttonBoldPrimary,
       ),
     );
   }

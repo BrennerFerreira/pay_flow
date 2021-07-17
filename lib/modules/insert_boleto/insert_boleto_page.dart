@@ -138,11 +138,8 @@ class _InsertBoletoPageState extends State<InsertBoletoPage> {
               ),
         bottomNavigationBar: LabelButtonsSet(
           primaryLabel: "Cancelar",
-          primaryOnPressed: controller.isLoading
-              ? null
-              : () {
-                  Navigator.pop(context);
-                },
+          primaryOnPressed:
+              controller.isLoading ? null : Navigator.of(context).pop,
           secondaryLabel: "Cadastrar",
           secondaryOnPressed: controller.isLoading
               ? null

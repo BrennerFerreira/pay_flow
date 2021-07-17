@@ -53,53 +53,59 @@ class ScannerBottomSheet extends StatelessWidget {
                       children: [
                         LineLabelButton(
                           label: "Tirar foto com a câmera",
-                          onPressed: () async {
-                            final image = await ImagePicker().getImage(
-                              source: ImageSource.camera,
-                            );
+                          onPressed: controller.isLoading
+                              ? null
+                              : () async {
+                                  final image = await ImagePicker().getImage(
+                                    source: ImageSource.camera,
+                                  );
 
-                            if (image != null) {
-                              final File imageFile = File(image.path);
-                              final barCode =
-                                  await controller.scanImage(imageFile);
+                                  if (image != null) {
+                                    final File imageFile = File(image.path);
+                                    final barCode =
+                                        await controller.scanImage(imageFile);
 
-                              if (barCode != null) {
-                                Navigator.of(context).popAndPushNamed(
-                                  INSERT_BOLETO_ROUTE,
-                                  arguments: barCode,
-                                );
-                              }
-                            }
-                          },
+                                    if (barCode != null) {
+                                      Navigator.of(context).popAndPushNamed(
+                                        INSERT_BOLETO_ROUTE,
+                                        arguments: barCode,
+                                      );
+                                    }
+                                  }
+                                },
                         ),
                         LineLabelButton(
                           label: "Escolher imagem da galeria",
-                          onPressed: () async {
-                            final image = await ImagePicker().getImage(
-                              source: ImageSource.gallery,
-                            );
+                          onPressed: controller.isLoading
+                              ? null
+                              : () async {
+                                  final image = await ImagePicker().getImage(
+                                    source: ImageSource.gallery,
+                                  );
 
-                            if (image != null) {
-                              final File imageFile = File(image.path);
-                              final barCode =
-                                  await controller.scanImage(imageFile);
+                                  if (image != null) {
+                                    final File imageFile = File(image.path);
+                                    final barCode =
+                                        await controller.scanImage(imageFile);
 
-                              if (barCode != null) {
-                                Navigator.of(context).popAndPushNamed(
-                                  INSERT_BOLETO_ROUTE,
-                                  arguments: barCode,
-                                );
-                              }
-                            }
-                          },
+                                    if (barCode != null) {
+                                      Navigator.of(context).popAndPushNamed(
+                                        INSERT_BOLETO_ROUTE,
+                                        arguments: barCode,
+                                      );
+                                    }
+                                  }
+                                },
                         ),
                         LineLabelButton(
                           label: "Digitar código",
-                          onPressed: () {
-                            Navigator.of(context).popAndPushNamed(
-                              INSERT_BOLETO_ROUTE,
-                            );
-                          },
+                          onPressed: controller.isLoading
+                              ? null
+                              : () {
+                                  Navigator.of(context).popAndPushNamed(
+                                    INSERT_BOLETO_ROUTE,
+                                  );
+                                },
                         ),
                       ],
                     ),
