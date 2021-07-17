@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../app/theme/colors.dart';
 import '../../../../../app/theme/text_styles.dart';
+import '../../../../../shared/analytics/controller/analytics_controller.dart';
 import '../../../../../shared/boleto/models/boleto.dart';
 import '../../../../../shared/widgets/dividers/horizontal_divider_widget.dart';
 import '../../../controllers/boleto_list_controller.dart';
@@ -105,6 +106,12 @@ class BoletoBottomSheet extends StatelessWidget {
                                     context,
                                     listen: false,
                                   ).updateBoletoPaid(boleto);
+
+                                  Provider.of<AnalyticsController>(
+                                    context,
+                                    listen: false,
+                                  ).markBoletoAsPaid();
+
                                   Navigator.of(context).pop();
                                 },
                                 isPrimary: true,
