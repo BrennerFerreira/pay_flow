@@ -34,21 +34,16 @@ class InsertBoletoController with ChangeNotifier {
     notifyListeners();
   }
 
-  void _setUpdatePrice({required bool newState}) {
-    _updatePrice = newState;
-    notifyListeners();
-  }
-
   Boleto get boleto => _boleto;
 
   void setBoletoBarCode(String barCode, {String? name}) {
     _boleto = Boleto.fromBarCode(barCode);
+    _updatePrice = true;
 
     if (name != null) {
       _boleto = _boleto.copyWith(name: name);
     }
-    _setUpdatePrice(newState: true);
-    notifyListeners();
+    return;
   }
 
   String? validateName() => _validateServices.validateName(_boleto.name);
@@ -62,20 +57,19 @@ class InsertBoletoController with ChangeNotifier {
     String? name,
     DateTime? dueDate,
     double? price,
-    String? barCode,
   }) {
     _setError(newState: false);
     _boleto = _boleto.copyWith(
       name: name,
       dueDate: dueDate,
       price: price,
-      barCode: barCode,
     );
     notifyListeners();
   }
 
   void onBarCodeChange(String? barCode) {
     _setError(newState: false);
+    _updatePrice = false;
     _boleto = _boleto.copyWith(barCode: barCode);
 
     if (barCode != null &&
