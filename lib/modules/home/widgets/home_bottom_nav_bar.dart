@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../app/theme/colors.dart';
+import '../../../shared/analytics/controller/analytics_controller.dart';
 import '../../bar_code_scanner/scanner_bottom_sheet.dart';
 import '../controllers/home_controller.dart';
 
@@ -17,6 +18,9 @@ class HomeBottomNavBar extends StatelessWidget {
           IconButton(
             onPressed: () {
               context.read<HomePageController>().onHomePressed();
+              context
+                  .read<AnalyticsController>()
+                  .sendCurrentTabToAnalytics("boletos");
             },
             icon: const Icon(Icons.home),
             color: context.watch<HomePageController>().currentPage == 0
@@ -44,6 +48,9 @@ class HomeBottomNavBar extends StatelessWidget {
           IconButton(
             onPressed: () {
               context.read<HomePageController>().onDescriptionPressed();
+              context
+                  .read<AnalyticsController>()
+                  .sendCurrentTabToAnalytics("extract");
             },
             icon: const Icon(Icons.description_outlined),
             color: context.watch<HomePageController>().currentPage == 1
