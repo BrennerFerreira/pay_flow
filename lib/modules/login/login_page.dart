@@ -69,9 +69,9 @@ class _LoginPageState extends State<LoginPage> {
                             LoginTitle(),
                             LoginButton(
                               onLoginSuccess: (String userId) {
-                                context
-                                    .read<AnalyticsController>()
-                                    .setUserId(userId);
+                                context.read<AnalyticsController>()
+                                  ..userLoggedIn("google")
+                                  ..setUserId(userId);
 
                                 Navigator.of(context)
                                     .pushReplacementNamed(HOME_ROUTE);

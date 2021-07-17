@@ -5,4 +5,5 @@ abstract class IAnalyticsServices {
   void sendCurrentTabToAnalytics(String tab);
   void newPageAccessed(String screenName);
   void setUserId(String userId);
+  void userLoggedIn(String method);
 }

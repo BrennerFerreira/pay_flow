@@ -23,4 +23,8 @@ class AnalyticsController {
   void setUserId(String userId) {
     return _analyticsServices.setUserId(userId);
   }
+
+  void userLoggedIn(String method) {
+    return _analyticsServices.userLoggedIn(method);
+  }
 }
