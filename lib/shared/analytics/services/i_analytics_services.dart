@@ -7,4 +7,5 @@ abstract class IAnalyticsServices {
   void setUserId(String userId);
   void userLoggedIn(String method);
   void addBoletoPressed();
+  void insertBoletoStarted(String method);
 }
