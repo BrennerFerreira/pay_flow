@@ -64,6 +64,8 @@ class _HomePageState extends State<HomePage> {
                             await context.read<HomePageController>().logOut();
 
                         if (result) {
+                          context.read<AnalyticsController>().userLoggedOut();
+
                           Navigator.of(context)
                               .pushReplacementNamed(LOGIN_ROUTE);
                         } else {
