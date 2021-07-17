@@ -6,6 +6,7 @@ import '../../app/routes/routes_names.dart';
 import '../../app/theme/colors.dart';
 import '../../app/theme/images.dart';
 import '../../app/theme/text_styles.dart';
+import '../../shared/analytics/controller/analytics_controller.dart';
 import '../../shared/auth/controller/auth_controller.dart';
 import '../../shared/loading_page/loading_page.dart';
 import '../../shared/widgets/toast/toast.dart';
@@ -24,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    context.read<AnalyticsController>().newPageAccessed('login');
     fToast = FToast();
     fToast.init(context);
   }
