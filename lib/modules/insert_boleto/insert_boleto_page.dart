@@ -140,8 +140,12 @@ class _InsertBoletoPageState extends State<InsertBoletoPage> {
               ),
         bottomNavigationBar: LabelButtonsSet(
           primaryLabel: "Cancelar",
-          primaryOnPressed:
-              controller.isLoading ? null : Navigator.of(context).pop,
+          primaryOnPressed: controller.isLoading
+              ? null
+              : () {
+                  context.read<AnalyticsController>().boletoSaveCancel();
+                  Navigator.of(context).pop();
+                },
           secondaryLabel: "Cadastrar",
           secondaryOnPressed: controller.isLoading
               ? null
@@ -149,6 +153,8 @@ class _InsertBoletoPageState extends State<InsertBoletoPage> {
                   final newBoleto = await controller.submitBoleto();
 
                   if (newBoleto == null) {
+                    context.read<AnalyticsController>().boletoSaveError();
+
                     fToast.showToast(
                       child: const CustomToast(
                         color: AppColors.delete,
@@ -160,6 +166,8 @@ class _InsertBoletoPageState extends State<InsertBoletoPage> {
                       toastDuration: const Duration(seconds: 2),
                     );
                   } else {
+                    context.read<AnalyticsController>().boletoSaveSuccess();
+
                     Navigator.of(context).pushNamedAndRemoveUntil(
                       HOME_ROUTE,
                       (route) => false,
