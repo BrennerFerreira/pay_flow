@@ -10,4 +10,7 @@ abstract class IAnalyticsServices {
   void insertBoletoStarted(String method);
   void barCodeScanSuccess();
   void barCodeScanError(String error);
+  void boletoSaveSuccess();
+  void boletoSaveError();
+  void boletoSaveCancel();
 }

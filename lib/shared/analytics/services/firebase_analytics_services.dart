@@ -63,4 +63,19 @@ class FirebaseAnalyticsServices implements IAnalyticsServices {
       "error": error,
     });
   }
+
+  @override
+  void boletoSaveSuccess() {
+    _analytics.logEvent(name: "boleto-save-success");
+  }
+
+  @override
+  void boletoSaveError() {
+    _analytics.logEvent(name: "boleto-save-error");
+  }
+
+  @override
+  void boletoSaveCancel() {
+    _analytics.logEvent(name: "boleto-save-cancel");
+  }
 }

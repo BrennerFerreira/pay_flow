@@ -44,4 +44,16 @@ class AnalyticsController {
   void barCodeScanError(String error) {
     return _analyticsServices.barCodeScanError(error);
   }
+
+  void boletoSaveSuccess() {
+    return _analyticsServices.boletoSaveSuccess();
+  }
+
+  void boletoSaveError() {
+    return _analyticsServices.boletoSaveError();
+  }
+
+  void boletoSaveCancel() {
+    return _analyticsServices.boletoSaveCancel();
+  }
 }
