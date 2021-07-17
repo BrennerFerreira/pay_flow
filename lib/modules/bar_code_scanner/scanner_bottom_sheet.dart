@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:boleto_organizer/shared/analytics/controller/analytics_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -8,11 +7,42 @@ import 'package:provider/provider.dart';
 import '../../app/routes/routes_names.dart';
 import '../../app/theme/colors.dart';
 import '../../app/theme/text_styles.dart';
+import '../../shared/analytics/controller/analytics_controller.dart';
 import 'controller/bar_code_scanner_controller.dart';
 import 'widgets/line_label_button.dart';
 
 class ScannerBottomSheet extends StatelessWidget {
   const ScannerBottomSheet({Key? key}) : super(key: key);
+
+  Future<void> _scanBarCode({
+    required BuildContext context,
+    required BarCodeScannerController controller,
+    required ImageSource source,
+  }) async {
+    context.read<AnalyticsController>().insertBoletoStarted(
+          source == ImageSource.camera ? "camera" : "gallery",
+        );
+
+    final image = await ImagePicker().getImage(
+      source: source,
+    );
+
+    if (image != null) {
+      final File imageFile = File(image.path);
+      final barCode = await controller.scanImage(imageFile);
+
+      if (barCode != null) {
+        context.read<AnalyticsController>().barCodeScanSuccess();
+
+        Navigator.of(context).popAndPushNamed(
+          INSERT_BOLETO_ROUTE,
+          arguments: barCode,
+        );
+      }
+    } else {
+      context.read<AnalyticsController>().barCodeScanError(controller.message);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,55 +86,21 @@ class ScannerBottomSheet extends StatelessWidget {
                           label: "Tirar foto com a câmera",
                           onPressed: controller.isLoading
                               ? null
-                              : () async {
-                                  context
-                                      .read<AnalyticsController>()
-                                      .insertBoletoStarted("camera");
-
-                                  final image = await ImagePicker().getImage(
+                              : () async => _scanBarCode(
+                                    context: context,
+                                    controller: controller,
                                     source: ImageSource.camera,
-                                  );
-
-                                  if (image != null) {
-                                    final File imageFile = File(image.path);
-                                    final barCode =
-                                        await controller.scanImage(imageFile);
-
-                                    if (barCode != null) {
-                                      Navigator.of(context).popAndPushNamed(
-                                        INSERT_BOLETO_ROUTE,
-                                        arguments: barCode,
-                                      );
-                                    }
-                                  }
-                                },
+                                  ),
                         ),
                         LineLabelButton(
                           label: "Escolher imagem da galeria",
                           onPressed: controller.isLoading
                               ? null
-                              : () async {
-                                  context
-                                      .read<AnalyticsController>()
-                                      .insertBoletoStarted("gallery");
-
-                                  final image = await ImagePicker().getImage(
+                              : () async => _scanBarCode(
+                                    context: context,
+                                    controller: controller,
                                     source: ImageSource.gallery,
-                                  );
-
-                                  if (image != null) {
-                                    final File imageFile = File(image.path);
-                                    final barCode =
-                                        await controller.scanImage(imageFile);
-
-                                    if (barCode != null) {
-                                      Navigator.of(context).popAndPushNamed(
-                                        INSERT_BOLETO_ROUTE,
-                                        arguments: barCode,
-                                      );
-                                    }
-                                  }
-                                },
+                                  ),
                         ),
                         LineLabelButton(
                           label: "Digitar código",
