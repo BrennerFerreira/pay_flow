@@ -1,8 +1,9 @@
-import 'package:boleto_organizer/shared/analytics/services/i_analytics_services.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
-import 'package:flutter/src/widgets/navigator.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+
+import 'i_analytics_services.dart';
 
 @Injectable(as: IAnalyticsServices)
 class FirebaseAnalyticsServices implements IAnalyticsServices {
@@ -11,6 +12,7 @@ class FirebaseAnalyticsServices implements IAnalyticsServices {
   FirebaseAnalytics get _analytics => _observer.analytics;
 
   FirebaseAnalyticsServices(this._observer);
+
   @override
   NavigatorObserver getObserver() {
     return _observer;
@@ -47,6 +49,18 @@ class FirebaseAnalyticsServices implements IAnalyticsServices {
   void insertBoletoStarted(String method) {
     _analytics.logEvent(name: "insert-boleto-started", parameters: {
       "method": method,
+    });
+  }
+
+  @override
+  void barCodeScanSuccess() {
+    _analytics.logEvent(name: "bar-code-scan-success");
+  }
+
+  @override
+  void barCodeScanError(String error) {
+    _analytics.logEvent(name: "bar-code-scan-error", parameters: {
+      "error": error,
     });
   }
 }
