@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:boleto_organizer/shared/analytics/controller/analytics_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -56,6 +57,10 @@ class ScannerBottomSheet extends StatelessWidget {
                           onPressed: controller.isLoading
                               ? null
                               : () async {
+                                  context
+                                      .read<AnalyticsController>()
+                                      .insertBoletoStarted("camera");
+
                                   final image = await ImagePicker().getImage(
                                     source: ImageSource.camera,
                                   );
@@ -79,6 +84,10 @@ class ScannerBottomSheet extends StatelessWidget {
                           onPressed: controller.isLoading
                               ? null
                               : () async {
+                                  context
+                                      .read<AnalyticsController>()
+                                      .insertBoletoStarted("gallery");
+
                                   final image = await ImagePicker().getImage(
                                     source: ImageSource.gallery,
                                   );
@@ -102,6 +111,10 @@ class ScannerBottomSheet extends StatelessWidget {
                           onPressed: controller.isLoading
                               ? null
                               : () {
+                                  context
+                                      .read<AnalyticsController>()
+                                      .insertBoletoStarted("manual");
+
                                   Navigator.of(context).popAndPushNamed(
                                     INSERT_BOLETO_ROUTE,
                                   );

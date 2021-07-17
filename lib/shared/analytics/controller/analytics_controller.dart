@@ -31,4 +31,8 @@ class AnalyticsController {
   void addBoletoPressed() {
     return _analyticsServices.addBoletoPressed();
   }
+
+  void insertBoletoStarted(String method) {
+    return _analyticsServices.insertBoletoStarted(method);
+  }
 }

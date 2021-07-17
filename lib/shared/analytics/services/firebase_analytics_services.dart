@@ -42,4 +42,11 @@ class FirebaseAnalyticsServices implements IAnalyticsServices {
   void addBoletoPressed() {
     _analytics.logEvent(name: "add-boleto-pressed");
   }
+
+  @override
+  void insertBoletoStarted(String method) {
+    _analytics.logEvent(name: "insert-boleto-started", parameters: {
+      "method": method,
+    });
+  }
 }
