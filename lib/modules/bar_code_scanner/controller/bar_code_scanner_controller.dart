@@ -10,6 +10,7 @@ import 'status/bar_code_scanner_status.dart';
 
 class BarCodeScannerController with ChangeNotifier {
   final _barCodeScanner = GoogleMlKit.vision.barcodeScanner();
+  Timer? _timer;
   BarCodeScannerStatus _status = BarCodeScannerStatus();
   bool _isLoading = false;
   String _message =
@@ -43,7 +44,7 @@ class BarCodeScannerController with ChangeNotifier {
   BarCodeScannerStatus get status => _status;
 
   Future<String?> _scannerBarCode(InputImage inputImage) async {
-    final timer = Timer(const Duration(seconds: 20), () {
+    _timer = Timer(const Duration(seconds: 20), () {
       if (!status.hasBarCode) {
         _setMessage("O tempo para leitura do boleto foi excedido.");
       }
@@ -61,14 +62,14 @@ class BarCodeScannerController with ChangeNotifier {
         final formattedBarCode = ConvertBarCodeString.calculateRow(barCode);
 
         if (formattedBarCode.error != null) {
-          timer.cancel();
+          _timer?.cancel();
           _setMessage(formattedBarCode.error!);
           _setIsLoading(newState: false);
           return null;
         }
 
         if (formattedBarCode.barCode != null) {
-          timer.cancel();
+          _timer?.cancel();
           _setIsLoading(newState: true);
           _setMessage("Código de barras encontrado.");
           _barCodeScanner.close();
@@ -79,6 +80,8 @@ class BarCodeScannerController with ChangeNotifier {
         }
       }
     } catch (error) {
+      _timer?.cancel();
+      _setIsLoading(newState: false);
       _setMessage("Erro durante a leitura do código de barras.");
       return null;
     }
@@ -94,6 +97,11 @@ class BarCodeScannerController with ChangeNotifier {
   @override
   void dispose() {
     _barCodeScanner.close();
+
+    if (_timer != null && _timer!.isActive) {
+      _timer!.cancel();
+    }
+
     super.dispose();
   }
 }
