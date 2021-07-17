@@ -52,11 +52,19 @@ class AppTextStyles {
     color: AppColors.title,
   );
   static final trailingBoldError = GoogleFonts.lexendDeca(
-      fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.delete);
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    color: AppColors.delete,
+  );
   static final buttonPrimary = GoogleFonts.inter(
     fontSize: 15,
     fontWeight: FontWeight.w400,
     color: AppColors.primary,
+  );
+  static final buttonDisabled = GoogleFonts.inter(
+    fontSize: 15,
+    fontWeight: FontWeight.w400,
+    color: AppColors.stroke,
   );
   static final buttonSecondary = GoogleFonts.inter(
     fontSize: 15,
@@ -72,6 +80,11 @@ class AppTextStyles {
     fontSize: 15,
     fontWeight: FontWeight.w700,
     color: AppColors.primary,
+  );
+  static final buttonBoldDisabled = GoogleFonts.inter(
+    fontSize: 15,
+    fontWeight: FontWeight.w700,
+    color: AppColors.stroke,
   );
   static final buttonBoldSecondary = GoogleFonts.inter(
     fontSize: 15,

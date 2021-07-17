@@ -22,7 +22,9 @@ class LabelButton extends StatelessWidget {
         onPressed: onPressed,
         child: Text(
           label,
-          style: style ?? AppTextStyles.buttonSecondary,
+          style: onPressed == null
+              ? AppTextStyles.buttonDisabled
+              : style ?? AppTextStyles.buttonSecondary,
         ),
       ),
     );
