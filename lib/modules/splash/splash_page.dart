@@ -1,3 +1,4 @@
+import 'package:boleto_organizer/shared/analytics/controller/analytics_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +21,7 @@ class _SplashPageState extends State<SplashPage> {
       final currentUser = context.read<AuthController>().getCurrentUser();
 
       if (currentUser != null) {
+        context.read<AnalyticsController>().setUserId(currentUser.id);
         Navigator.of(context).pushReplacementNamed(HOME_ROUTE);
       } else {
         Navigator.of(context).pushReplacementNamed(LOGIN_ROUTE);

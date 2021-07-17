@@ -8,7 +8,7 @@ import '../../../shared/auth/controller/auth_controller.dart';
 import '../../../shared/widgets/dividers/vertical_divider_widget.dart';
 
 class LoginButton extends StatelessWidget {
-  final VoidCallback onLoginSuccess;
+  final void Function(String) onLoginSuccess;
   final VoidCallback onLoginFail;
 
   const LoginButton({
@@ -29,7 +29,7 @@ class LoginButton extends StatelessWidget {
             final userIsLoggedIn = controller.userIsLoggedIn;
 
             if (userIsLoggedIn) {
-              onLoginSuccess();
+              onLoginSuccess(controller.user!.id);
             } else {
               onLoginFail();
             }
