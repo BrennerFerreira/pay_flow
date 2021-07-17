@@ -68,7 +68,11 @@ class _LoginPageState extends State<LoginPage> {
                             Image.asset(AppImages.logomini),
                             LoginTitle(),
                             LoginButton(
-                              onLoginSuccess: () {
+                              onLoginSuccess: (String userId) {
+                                context
+                                    .read<AnalyticsController>()
+                                    .setUserId(userId);
+
                                 Navigator.of(context)
                                     .pushReplacementNamed(HOME_ROUTE);
                               },
