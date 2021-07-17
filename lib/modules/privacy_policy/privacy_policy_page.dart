@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import '../../shared/analytics/controller/analytics_controller.dart';
 
 class PrivacyPolicyPage extends StatefulWidget {
   @override
@@ -16,6 +19,8 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
     if (Platform.isAndroid) {
       WebView.platform = SurfaceAndroidWebView();
     }
+
+    context.read<AnalyticsController>().newPageAccessed("privacy-policy");
   }
 
   @override

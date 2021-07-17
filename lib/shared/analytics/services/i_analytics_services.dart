@@ -4,4 +4,5 @@ abstract class IAnalyticsServices {
   NavigatorObserver getObserver();
   void sendCurrentTabToAnalytics(String tab);
   void newPageAccessed(String screenName);
+  void setUserId(String userId);
 }

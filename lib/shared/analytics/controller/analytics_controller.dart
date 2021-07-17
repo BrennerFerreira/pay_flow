@@ -19,4 +19,8 @@ class AnalyticsController {
   void newPageAccessed(String screenName) {
     return _analyticsServices.newPageAccessed(screenName);
   }
+
+  void setUserId(String userId) {
+    return _analyticsServices.setUserId(userId);
+  }
 }
