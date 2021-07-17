@@ -7,6 +7,7 @@ abstract class IAnalyticsServices {
   void newPageAccessed(String screenName);
   void setUserId(String userId);
   void userLoggedIn(String method);
+  void userLoggedOut();
   void addBoletoPressed();
   void insertBoletoStarted(String method);
   void barCodeScanSuccess();
