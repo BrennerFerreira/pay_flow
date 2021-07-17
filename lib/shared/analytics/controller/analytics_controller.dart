@@ -13,6 +13,10 @@ class AnalyticsController {
     return _analyticsServices.getObserver();
   }
 
+  void appOpen() {
+    return _analyticsServices.appOpen();
+  }
+
   void sendCurrentTabToAnalytics(String tab) {
     return _analyticsServices.sendCurrentTabToAnalytics(tab);
   }

@@ -1,10 +1,10 @@
-import 'package:boleto_organizer/shared/analytics/controller/analytics_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import '../flavor.dart';
 import '../injectable.dart';
+import '../shared/analytics/controller/analytics_controller.dart';
 import '../shared/auth/controller/auth_controller.dart';
 import 'routes/routes.dart';
 import 'theme/theme.dart';
@@ -21,7 +21,9 @@ class AppWidget extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<AppFlavor>.value(value: flavor),
-        Provider<AnalyticsController>.value(value: _analyticsController),
+        Provider<AnalyticsController>.value(
+          value: _analyticsController..appOpen(),
+        ),
         ChangeNotifierProvider<AuthController>(
           create: (_) => getIt<AuthController>(),
         ),
