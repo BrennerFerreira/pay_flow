@@ -6,4 +6,5 @@ abstract class IAnalyticsServices {
   void newPageAccessed(String screenName);
   void setUserId(String userId);
   void userLoggedIn(String method);
+  void addBoletoPressed();
 }
