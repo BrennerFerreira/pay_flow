@@ -22,6 +22,7 @@ class FirebaseFirestoreServices {
         await _firestore.collection(USERS_STRING).doc(user.id).set(
           {
             CREATED_AT_STRING: DateTime.now().millisecondsSinceEpoch,
+            EMAIL_STRING: user.email,
           },
         );
       }
