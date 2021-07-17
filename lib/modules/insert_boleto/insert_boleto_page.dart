@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../app/routes/routes_names.dart';
 import '../../app/theme/colors.dart';
 import '../../app/theme/text_styles.dart';
+import '../../shared/analytics/controller/analytics_controller.dart';
 import '../../shared/widgets/label_buttons_set/label_buttons_set.dart';
 import '../../shared/widgets/toast/toast.dart';
 import 'controller/insert_boleto_controller.dart';
@@ -36,6 +37,7 @@ class _InsertBoletoPageState extends State<InsertBoletoPage> {
   @override
   void initState() {
     super.initState();
+    context.read<AnalyticsController>().newPageAccessed("insert-boleto");
     final pageController = context.read<InsertBoletoController>();
 
     if (widget.barCode != null) {

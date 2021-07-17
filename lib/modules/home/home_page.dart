@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../app/routes/routes_names.dart';
 import '../../app/theme/colors.dart';
 import '../../injectable.dart';
+import '../../shared/analytics/controller/analytics_controller.dart';
 import '../../shared/auth/controller/auth_controller.dart';
 import '../../shared/loading_page/loading_page.dart';
 import '../../shared/widgets/toast/toast.dart';
@@ -26,6 +27,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    context.read<AnalyticsController>().newPageAccessed('home');
     fToast = FToast();
     fToast.init(context);
   }

@@ -25,4 +25,9 @@ class FirebaseAnalyticsServices implements IAnalyticsServices {
   void newPageAccessed(String screenName) {
     _observer.analytics.setCurrentScreen(screenName: screenName);
   }
+
+  @override
+  void setUserId(String userId) {
+    _observer.analytics.setUserId(userId);
+  }
 }
