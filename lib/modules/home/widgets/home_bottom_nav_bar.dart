@@ -18,6 +18,7 @@ class HomeBottomNavBar extends StatelessWidget {
           IconButton(
             onPressed: () {
               context.read<HomePageController>().onHomePressed();
+
               context
                   .read<AnalyticsController>()
                   .sendCurrentTabToAnalytics("boletos");
@@ -36,6 +37,8 @@ class HomeBottomNavBar extends StatelessWidget {
             ),
             child: IconButton(
               onPressed: () {
+                context.read<AnalyticsController>().addBoletoPressed();
+
                 showModalBottomSheet(
                   context: context,
                   builder: (context) => const ScannerBottomSheet(),
@@ -48,6 +51,7 @@ class HomeBottomNavBar extends StatelessWidget {
           IconButton(
             onPressed: () {
               context.read<HomePageController>().onDescriptionPressed();
+
               context
                   .read<AnalyticsController>()
                   .sendCurrentTabToAnalytics("extract");

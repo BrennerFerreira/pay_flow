@@ -37,4 +37,9 @@ class FirebaseAnalyticsServices implements IAnalyticsServices {
   void userLoggedIn(String method) {
     _analytics.logLogin(loginMethod: method);
   }
+
+  @override
+  void addBoletoPressed() {
+    _analytics.logEvent(name: "add-boleto-pressed");
+  }
 }
