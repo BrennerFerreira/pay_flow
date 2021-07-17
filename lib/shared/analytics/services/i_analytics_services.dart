@@ -8,4 +8,6 @@ abstract class IAnalyticsServices {
   void userLoggedIn(String method);
   void addBoletoPressed();
   void insertBoletoStarted(String method);
+  void barCodeScanSuccess();
+  void barCodeScanError(String error);
 }

@@ -1,6 +1,7 @@
-import 'package:boleto_organizer/shared/analytics/services/i_analytics_services.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+
+import '../services/i_analytics_services.dart';
 
 @injectable
 class AnalyticsController {
@@ -34,5 +35,13 @@ class AnalyticsController {
 
   void insertBoletoStarted(String method) {
     return _analyticsServices.insertBoletoStarted(method);
+  }
+
+  void barCodeScanSuccess() {
+    return _analyticsServices.barCodeScanSuccess();
+  }
+
+  void barCodeScanError(String error) {
+    return _analyticsServices.barCodeScanError(error);
   }
 }
