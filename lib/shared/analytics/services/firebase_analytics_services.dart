@@ -19,6 +19,11 @@ class FirebaseAnalyticsServices implements IAnalyticsServices {
   }
 
   @override
+  void appOpen() {
+    _analytics.logAppOpen();
+  }
+
+  @override
   void sendCurrentTabToAnalytics(String tab) {
     _analytics.setCurrentScreen(
       screenName: 'home/$tab',
