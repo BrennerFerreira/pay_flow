@@ -5,6 +5,7 @@ const String CREATED_AT_STRING = "createdAt";
 const String DARK_THEME_STRING = "darkTheme";
 const String EMAIL_STRING = "email";
 const String ID_TOKEN_STRING = "idToken";
+const String LOCAL_AUTH_STRING = "localAuth";
 const String PLATFORM_STRING = "platform";
 const String TOKENS_STRING = "tokens";
 const String TOKEN_TITLE_STRING = "token";

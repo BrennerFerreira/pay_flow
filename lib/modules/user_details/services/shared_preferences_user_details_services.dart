@@ -21,4 +21,11 @@ class SharedPreferencesUserDetailsServices implements IUserDetailsServices {
 
     return darkThemePreference;
   }
+
+  @override
+  Future<bool> useLocalAuth() async {
+    final useLocalAuth = _prefs.getBool(LOCAL_AUTH_STRING) ?? false;
+
+    return useLocalAuth;
+  }
 }
