@@ -7,6 +7,7 @@ import '../../../shared/user/models/user.dart';
 class HomeAppBar {
   static PreferredSize appBar({
     required VoidCallback onLogOut,
+    required VoidCallback onUserDetailsTap,
     required User? user,
   }) =>
       PreferredSize(
@@ -46,18 +47,21 @@ class HomeAppBar {
                     "Matenha as suas contas em dia",
                     style: AppTextStyles.captionOnPrimary,
                   ),
-                  trailing: Container(
-                    height: 48,
-                    width: 48,
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(10),
-                      image: user?.photoUrl != null
-                          ? DecorationImage(
-                              image: NetworkImage(
-                              user!.photoUrl!,
-                            ))
-                          : null,
+                  trailing: InkWell(
+                    onTap: onUserDetailsTap,
+                    child: Container(
+                      height: 48,
+                      width: 48,
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(10),
+                        image: user?.photoUrl != null
+                            ? DecorationImage(
+                                image: NetworkImage(
+                                user!.photoUrl!,
+                              ))
+                            : null,
+                      ),
                     ),
                   ),
                 ),
