@@ -1,3 +1,4 @@
+import 'package:boleto_organizer/modules/user_details/controller/user_details_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +27,9 @@ class AppWidget extends StatelessWidget {
         ),
         ChangeNotifierProvider<AuthController>(
           create: (_) => getIt<AuthController>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => getIt<UserDetailsController>(),
         ),
       ],
       builder: (context, __) => MaterialApp(
