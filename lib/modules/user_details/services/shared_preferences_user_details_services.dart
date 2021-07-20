@@ -28,4 +28,11 @@ class SharedPreferencesUserDetailsServices implements IUserDetailsServices {
 
     return useLocalAuth;
   }
+
+  @override
+  Future<bool> setUseLocalAuth({required bool newValue}) async {
+    final result = await _prefs.setBool(LOCAL_AUTH_STRING, newValue);
+
+    return result;
+  }
 }

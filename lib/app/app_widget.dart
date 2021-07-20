@@ -32,23 +32,38 @@ class AppWidget extends StatelessWidget {
           create: (_) => getIt<UserDetailsController>(),
         ),
       ],
-      builder: (context, __) => MaterialApp(
-        title: flavor == AppFlavor.PROD
-            ? 'Pay Flow'
-            : flavor == AppFlavor.PREVIEW
-                ? 'Pay Flow - Preview'
-                : 'Pay Flow - Dev',
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [Locale('pt', 'BR')],
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        debugShowCheckedModeBanner: false,
-        routes: routes,
-        navigatorObservers: [context.read<AnalyticsController>().getObserver()],
+      builder: (context, __) => FutureBuilder<UserPreferences>(
+        future: context.read<UserDetailsController>().getPreferences(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return MaterialApp(
+              title: flavor == AppFlavor.PROD
+                  ? 'Pay Flow'
+                  : flavor == AppFlavor.PREVIEW
+                      ? 'Pay Flow - Preview'
+                      : 'Pay Flow - Dev',
+              localizationsDelegates: const [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: const [Locale('pt', 'BR')],
+              theme: AppTheme.lightTheme,
+              darkTheme: AppTheme.darkTheme,
+              debugShowCheckedModeBanner: false,
+              routes: routes,
+              navigatorObservers: [
+                context.read<AnalyticsController>().getObserver()
+              ],
+            );
+          }
+
+          return const Material(
+            child: Center(
+              child: CircularProgressIndicator.adaptive(),
+            ),
+          );
+        },
       ),
     );
   }
