@@ -22,7 +22,7 @@ class _SplashPageState extends State<SplashPage> {
 
       if (currentUser != null) {
         context.read<AnalyticsController>().setUserId(currentUser.id);
-        Navigator.of(context).pushReplacementNamed(HOME_ROUTE);
+        Navigator.of(context).pushReplacementNamed(LOCAL_AUTH_ROUTE);
       } else {
         Navigator.of(context).pushReplacementNamed(LOGIN_ROUTE);
       }
