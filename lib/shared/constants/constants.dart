@@ -2,6 +2,7 @@
 const String ACCESS_TOKEN_STRING = "accessToken";
 const String BOLETOS_STRING = "boletos";
 const String CREATED_AT_STRING = "createdAt";
+const String DARK_THEME_STRING = "darkTheme";
 const String EMAIL_STRING = "email";
 const String ID_TOKEN_STRING = "idToken";
 const String PLATFORM_STRING = "platform";
