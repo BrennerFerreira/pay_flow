@@ -1,3 +1,4 @@
+import 'package:boleto_organizer/modules/user_details/controller/user_details_controller.dart';
 import 'package:boleto_organizer/shared/analytics/controller/analytics_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -22,7 +23,15 @@ class _SplashPageState extends State<SplashPage> {
 
       if (currentUser != null) {
         context.read<AnalyticsController>().setUserId(currentUser.id);
-        Navigator.of(context).pushReplacementNamed(LOCAL_AUTH_ROUTE);
+
+        print(
+            "local auth ${context.read<UserDetailsController>().useLocalAuth}");
+
+        Navigator.of(context).pushReplacementNamed(
+          context.read<UserDetailsController>().useLocalAuth
+              ? LOCAL_AUTH_ROUTE
+              : HOME_ROUTE,
+        );
       } else {
         Navigator.of(context).pushReplacementNamed(LOGIN_ROUTE);
       }
