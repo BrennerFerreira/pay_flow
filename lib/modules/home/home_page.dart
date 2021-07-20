@@ -59,6 +59,9 @@ class _HomePageState extends State<HomePage> {
                         context,
                         listen: true,
                       ).user,
+                      onUserDetailsTap: () {
+                        Navigator.of(context).pushNamed(USER_DETAILS_ROUTE);
+                      },
                       onLogOut: () async {
                         final result =
                             await context.read<HomePageController>().logOut();
