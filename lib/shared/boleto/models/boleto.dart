@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:uuid/uuid.dart';
 
+import '../../extensions/format_date_extension.dart';
 import '../helpers/get_due_date_and_value_from_bar_code.dart';
 
 class Boleto {
@@ -55,15 +56,6 @@ class Boleto {
 
   String get barCodeRaw => barCode.replaceAll(RegExp("[^0-9]"), "");
 
-  String formatDate(DateTime date) {
-    final int day = date.day;
-    final int month = date.month;
-    final int year = date.year;
-    final String stringDay = day < 10 ? "0$day" : day.toString();
-    final String stringMonth = month < 10 ? "0$month" : month.toString();
-    return "$stringDay/$stringMonth/$year";
-  }
-
   bool get pastDueDate {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
@@ -73,8 +65,8 @@ class Boleto {
     return !paid && boletoDueDate.isBefore(today);
   }
 
-  String get dueDateFormatted => formatDate(dueDate);
-  String get paidAtDateFormatted => formatDate(paidAt!);
+  String get dueDateFormatted => dueDate.formatDate();
+  String get paidAtDateFormatted => paidAt!.formatDate();
 
   Boleto copyWith({
     String? id,
