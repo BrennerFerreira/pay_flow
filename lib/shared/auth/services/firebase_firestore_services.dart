@@ -93,4 +93,14 @@ class FirebaseFirestoreServices {
       return;
     }
   }
+
+  Future<bool?> deleteUserDoc(String userId) async {
+    try {
+      await _firestore.collection(USERS_STRING).doc(userId).delete();
+
+      return true;
+    } on FirebaseException {
+      return false;
+    }
+  }
 }

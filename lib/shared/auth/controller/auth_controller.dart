@@ -64,4 +64,11 @@ class AuthController with ChangeNotifier {
     _setUserLoggedIn(loggedInUser);
     return loggedInUser;
   }
+
+  Future<bool> deleteAccount() async {
+    _setLoading(newState: true);
+    final result = await _services.deleteAccount();
+    _setLoading(newState: false);
+    return result;
+  }
 }
