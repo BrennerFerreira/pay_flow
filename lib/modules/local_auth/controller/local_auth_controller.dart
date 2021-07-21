@@ -1,6 +1,7 @@
-import 'package:boleto_organizer/modules/local_auth/services/i_local_auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+
+import '../services/i_local_auth_services.dart';
 
 @injectable
 class LocalAuthController with ChangeNotifier {
@@ -15,19 +16,27 @@ class LocalAuthController with ChangeNotifier {
   bool _isAuthenticated = false;
   bool get isAuthenticated => _isAuthenticated;
 
-  Future<void> authenticationRequested() async {
-    final authenticationSuccess = await _services.authenticate();
+  Future<bool> authenticationRequested() async {
+    final authenticationResponse = await _services.authenticate();
 
-    if (authenticationSuccess == null) {
-      await _services.cancelAuthentication();
-      _authFail = true;
-    } else {
-      _authFail = !authenticationSuccess;
-      _isAuthenticated = authenticationSuccess;
+    if (authenticationResponse == null) {
+      _isLoading = false;
+      notifyListeners();
+      return true;
     }
 
+    if (!authenticationResponse) {
+      await _services.cancelAuthentication();
+      _authFail = true;
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+
+    _authFail = !authenticationResponse;
+    _isAuthenticated = authenticationResponse;
     _isLoading = false;
     notifyListeners();
-    return;
+    return true;
   }
 }

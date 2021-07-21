@@ -5,7 +5,7 @@ import 'package:local_auth/local_auth.dart';
 
 import 'i_local_auth_services.dart';
 
-@Injectable(as: ILocalAuthServices)
+@LazySingleton(as: ILocalAuthServices)
 class LocalAuthServices implements ILocalAuthServices {
   final LocalAuthentication _localAuth;
 
@@ -63,7 +63,7 @@ class LocalAuthServices implements ILocalAuthServices {
 
       return authenticated;
     } on PlatformException {
-      return null;
+      return false;
     }
   }
 

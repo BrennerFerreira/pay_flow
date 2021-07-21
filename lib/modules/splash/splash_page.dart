@@ -21,19 +21,18 @@ class _SplashPageState extends State<SplashPage> {
     SchedulerBinding.instance?.addPostFrameCallback((_) {
       final currentUser = context.read<AuthController>().getCurrentUser();
 
-      if (currentUser != null) {
-        context.read<AnalyticsController>().setUserId(currentUser.id);
-
-        print(
-            "local auth ${context.read<UserDetailsController>().useLocalAuth}");
-
-        Navigator.of(context).pushReplacementNamed(
-          context.read<UserDetailsController>().useLocalAuth
-              ? LOCAL_AUTH_ROUTE
-              : HOME_ROUTE,
-        );
-      } else {
+      if (currentUser == null) {
         Navigator.of(context).pushReplacementNamed(LOGIN_ROUTE);
+        return;
+      }
+
+      context.read<AnalyticsController>().setUserId(currentUser.id);
+
+      if (context.read<UserDetailsController>().useLocalAuth) {
+        Navigator.of(context)
+            .pushReplacementNamed(LOCAL_AUTH_ROUTE, arguments: "splash page");
+      } else {
+        Navigator.of(context).pushReplacementNamed(HOME_ROUTE);
       }
     });
   }
