@@ -23,7 +23,7 @@ class ScannerBottomSheet extends StatelessWidget {
           source == ImageSource.camera ? "camera" : "gallery",
         );
 
-    final image = await ImagePicker().getImage(
+    final image = await ImagePicker().pickImage(
       source: source,
     );
 
