@@ -1,27 +1,31 @@
-import 'package:boleto_organizer/app/theme/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/routes/routes_names.dart';
+import '../../app/theme/text_styles.dart';
 import 'controller/local_auth_controller.dart';
 
 class LocalAuthPage extends StatefulWidget {
+  final String source;
+
+  const LocalAuthPage({Key? key, required this.source}) : super(key: key);
+
   @override
   _LocalAuthPageState createState() => _LocalAuthPageState();
 }
 
 class _LocalAuthPageState extends State<LocalAuthPage> {
-  Future<void> _requestAuthentication() async {
-    await context.read<LocalAuthController>().authenticationRequested();
-    if (context.read<LocalAuthController>().isAuthenticated) {
-      Navigator.of(context).pushReplacementNamed(HOME_ROUTE);
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    _requestAuthentication();
+
+    context.read<LocalAuthController>().authenticationRequested().then(
+      (value) {
+        if (value) {
+          Navigator.of(context).pushReplacementNamed(HOME_ROUTE);
+        }
+      },
+    );
   }
 
   @override

@@ -19,7 +19,9 @@ final Map<String, Widget Function(BuildContext)> routes = {
   PRIVACY_POLICY_ROUTE: (_) => PrivacyPolicyPage(),
   LOCAL_AUTH_ROUTE: (context) => ChangeNotifierProvider<LocalAuthController>(
         create: (_) => getIt<LocalAuthController>(),
-        builder: (context, _) => LocalAuthPage(),
+        builder: (context, _) => LocalAuthPage(
+            source: ModalRoute.of(context)?.settings.arguments as String? ??
+                "route source"),
       ),
   HOME_ROUTE: (_) => HomePage(),
   USER_DETAILS_ROUTE: (_) => UserDetailsPage(),

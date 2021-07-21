@@ -92,7 +92,7 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       get<_i6.FirebaseAuthServices>(),
       get<_i10.FirebaseFirestoreServices>(),
       get<_i24.FirebaseMessaginServices>()));
-  gh.factory<_i28.ILocalAuthServices>(
+  gh.lazySingleton<_i28.ILocalAuthServices>(
       () => _i29.LocalAuthServices(get<_i20.LocalAuthentication>()));
   gh.factory<_i30.IUserDetailsServices>(() =>
       _i31.SharedPreferencesUserDetailsServices(get<_i21.SharedPreferences>()));

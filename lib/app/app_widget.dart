@@ -35,7 +35,7 @@ class AppWidget extends StatelessWidget {
       builder: (context, __) => FutureBuilder<UserPreferences>(
         future: context.read<UserDetailsController>().getPreferences(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasData) {
             return MaterialApp(
               title: flavor == AppFlavor.PROD
                   ? 'Pay Flow'
