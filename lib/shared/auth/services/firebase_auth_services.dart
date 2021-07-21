@@ -47,4 +47,30 @@ class FirebaseAuthServices {
 
     return user;
   }
+
+  Future<bool?> deleteAccount({
+    required String? accessToken,
+    required String? idToken,
+  }) async {
+    try {
+      final currentUser = _auth.currentUser;
+
+      if (currentUser == null) {
+        return null;
+      }
+
+      final credential = auth.GoogleAuthProvider.credential(
+        idToken: idToken,
+        accessToken: accessToken,
+      );
+
+      await _auth.currentUser!.reauthenticateWithCredential(credential);
+
+      await _auth.currentUser!.delete();
+
+      return true;
+    } on auth.FirebaseException {
+      return false;
+    }
+  }
 }

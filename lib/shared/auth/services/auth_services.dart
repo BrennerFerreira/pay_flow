@@ -94,4 +94,40 @@ class AuthServices implements IAuthServices {
 
     return currentUser;
   }
+
+  @override
+  Future<bool> deleteAccount() async {
+    final currentUser = _auth.currentUser();
+
+    if (currentUser == null) {
+      return false;
+    }
+
+    final credentials = await _googleServices.signIn();
+
+    if (credentials == null) {
+      return false;
+    }
+
+    final authDeleteSuccess = await _auth.deleteAccount(
+      accessToken: credentials.accessToken,
+      idToken: credentials.idToken,
+    );
+
+    if (authDeleteSuccess == null || !authDeleteSuccess) {
+      return false;
+    }
+
+    await _googleServices.logOut();
+
+    final docDeleteSuccess = await _firestoreServices.deleteUserDoc(
+      currentUser.id,
+    );
+
+    if (docDeleteSuccess == null || !docDeleteSuccess) {
+      return false;
+    }
+
+    return true;
+  }
 }

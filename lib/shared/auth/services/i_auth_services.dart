@@ -8,4 +8,6 @@ abstract class IAuthServices {
   Future<bool> logOut();
 
   User? getCurrentUser();
+
+  Future<bool> deleteAccount();
 }
