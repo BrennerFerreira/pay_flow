@@ -1,11 +1,10 @@
-import 'package:boleto_organizer/modules/user_details/controller/user_details_controller.dart';
-import 'package:boleto_organizer/shared/analytics/controller/analytics_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 
 import '../../app/routes/routes_names.dart';
 import '../../app/theme/images.dart';
+import '../../shared/analytics/controller/analytics_controller.dart';
 import '../../shared/auth/controller/auth_controller.dart';
 
 class SplashPage extends StatefulWidget {
@@ -28,12 +27,7 @@ class _SplashPageState extends State<SplashPage> {
 
       context.read<AnalyticsController>().setUserId(currentUser.id);
 
-      if (context.read<UserDetailsController>().useLocalAuth) {
-        Navigator.of(context)
-            .pushReplacementNamed(LOCAL_AUTH_ROUTE, arguments: "splash page");
-      } else {
-        Navigator.of(context).pushReplacementNamed(HOME_ROUTE);
-      }
+      Navigator.of(context).pushReplacementNamed(HOME_ROUTE);
     });
   }
 
