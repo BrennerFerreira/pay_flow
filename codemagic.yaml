@@ -91,7 +91,7 @@ workflows:
       - flutter packages pub get
       - flutter build appbundle --release --flavor prod -t lib/main.dart --obfuscate
         --split-debug-info=build/app/outputs/symbols --build-name=1.1.$BUILD_NUMBER
-        --build-number=$(($BUILD_NUMBER + 100))
+        --build-number=$(($BUILD_NUMBER + 110))
     artifacts:
       - build/**/outputs/apk/**/*.apk
       - build/**/outputs/bundle/**/*.aab
@@ -145,7 +145,7 @@ workflows:
       - flutter packages pub get
       - flutter build appbundle --release --flavor prod -t lib/main.dart --obfuscate
         --split-debug-info=build/app/outputs/symbols --build-name=1.1.$BUILD_NUMBER
-        --build-number=$(($BUILD_NUMBER + 100))
+        --build-number=$(($BUILD_NUMBER + 110))
     artifacts:
       - build/**/outputs/apk/**/*.apk
       - build/**/outputs/bundle/**/*.aab
