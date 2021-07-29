@@ -24,7 +24,7 @@ workflows:
           include: true
           source: true
       tag_patterns:
-        - pattern: '*'
+        - pattern: "*"
           include: true
     scripts:
       - |
@@ -73,7 +73,7 @@ workflows:
           include: true
           source: true
       tag_patterns:
-        - pattern: '*'
+        - pattern: "*"
           include: true
     scripts:
       - |
@@ -90,7 +90,7 @@ workflows:
         echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
       - flutter packages pub get
       - flutter build appbundle --release --flavor prod -t lib/main.dart --obfuscate
-        --split-debug-info=build/app/outputs/symbols --build-name=1.0.$BUILD_NUMBER
+        --split-debug-info=build/app/outputs/symbols --build-name=1.1.$BUILD_NUMBER
         --build-number=$(($BUILD_NUMBER + 100))
     artifacts:
       - build/**/outputs/apk/**/*.apk
@@ -127,7 +127,7 @@ workflows:
           include: true
           source: true
       tag_patterns:
-        - pattern: '*'
+        - pattern: "*"
           include: true
     scripts:
       - |
@@ -144,7 +144,7 @@ workflows:
         echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
       - flutter packages pub get
       - flutter build appbundle --release --flavor prod -t lib/main.dart --obfuscate
-        --split-debug-info=build/app/outputs/symbols --build-name=1.0.$BUILD_NUMBER
+        --split-debug-info=build/app/outputs/symbols --build-name=1.1.$BUILD_NUMBER
         --build-number=$(($BUILD_NUMBER + 100))
     artifacts:
       - build/**/outputs/apk/**/*.apk
