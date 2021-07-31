@@ -50,4 +50,3 @@ app.*.map.json
 
 **/*.key.properties
 
-**/google-services.json
