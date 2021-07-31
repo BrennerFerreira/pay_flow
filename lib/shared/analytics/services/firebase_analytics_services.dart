@@ -26,7 +26,7 @@ class FirebaseAnalyticsServices implements IAnalyticsServices {
   @override
   void sendCurrentTabToAnalytics(String tab) {
     _analytics.setCurrentScreen(
-      screenName: 'home/$tab',
+      screenName: '/home/$tab',
     );
   }
 
@@ -47,55 +47,55 @@ class FirebaseAnalyticsServices implements IAnalyticsServices {
 
   @override
   void userLoggedOut() {
-    _analytics.logEvent(name: 'user-log-out');
+    _analytics.logEvent(name: 'user_log_out');
   }
 
   @override
   void addBoletoPressed() {
-    _analytics.logEvent(name: "add-boleto-pressed");
+    _analytics.logEvent(name: "add_boleto_pressed");
   }
 
   @override
   void insertBoletoStarted(String method) {
-    _analytics.logEvent(name: "insert-boleto-started", parameters: {
+    _analytics.logEvent(name: "insert_boleto_started", parameters: {
       "method": method,
     });
   }
 
   @override
   void barCodeScanSuccess() {
-    _analytics.logEvent(name: "bar-code-scan-success");
+    _analytics.logEvent(name: "bar_code_scan_success");
   }
 
   @override
   void barCodeScanError(String error) {
-    _analytics.logEvent(name: "bar-code-scan-error", parameters: {
+    _analytics.logEvent(name: "bar_code_scan_error", parameters: {
       "error": error,
     });
   }
 
   @override
   void boletoSaveSuccess() {
-    _analytics.logEvent(name: "boleto-save-success");
+    _analytics.logEvent(name: "boleto_save_success");
   }
 
   @override
   void boletoSaveError() {
-    _analytics.logEvent(name: "boleto-save-error");
+    _analytics.logEvent(name: "boleto_save_error");
   }
 
   @override
   void boletoSaveCancel() {
-    _analytics.logEvent(name: "boleto-save-cancel");
+    _analytics.logEvent(name: "boleto_save_cancel");
   }
 
   @override
   void markBoletoAsPaid() {
-    _analytics.logEvent(name: "boleto-paid");
+    _analytics.logEvent(name: "boleto_paid");
   }
 
   @override
   void boletoDeleted() {
-    _analytics.logEvent(name: "boleto-deleted");
+    _analytics.logEvent(name: "boleto_deleted");
   }
 }
